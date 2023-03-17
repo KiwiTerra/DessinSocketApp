@@ -99,7 +99,7 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
         }
 
         if (e.getSource() == this.btnCreerSalon) {
-            this.ctrl.afficherFenetreDessin();
+            this.ctrl.creerPartie();
         }
 
         if (e.getSource() == this.btnRejoindreSalon) {
@@ -120,7 +120,7 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
         String ip = JOptionPane.showInputDialog ( this, "Entrez l'adresse IP de l'hôte", "Rejoindre une partie", JOptionPane.QUESTION_MESSAGE );
         if ( ip != null )
         {
-            //this.ctrl.rejoindrePartie ( ip );
+            this.ctrl.rejoindrePartie ( ip );
         }
     }
 

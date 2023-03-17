@@ -3,10 +3,12 @@ package ihm.dessin;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import main.Controleur;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 public class FrameApp extends JFrame {
@@ -16,8 +18,9 @@ public class FrameApp extends JFrame {
 	private final int LONGUEUR = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	private final int HAUTEUR  = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
+	private PanelDessin  panelDessin;
 	private PanelButtons panelBtns;
-	private JPanel panelDessin;
+	private PanelJoueurs panelJoueurs;
 
 	public FrameApp(Controleur ctrl) {
 
@@ -29,13 +32,26 @@ public class FrameApp extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création des composants
-		this.panelBtns = new PanelButtons();
-		this.panelDessin = new JPanel();
-		this.panelDessin.add(new JLabel("dessin"));
+		this.panelDessin = new PanelDessin(ctrl);
+
+		JPanel panelDroite = new JPanel(new GridLayout(2, 1));
+		this.panelBtns     = new PanelButtons(ctrl);
+		this.panelJoueurs  = new PanelJoueurs(ctrl);
+
+		JScrollPane spBtns = new JScrollPane(panelBtns);
+		spBtns.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		spBtns.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+		JScrollPane spJoueurs = new JScrollPane(panelJoueurs);
+		spJoueurs.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		spJoueurs.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
 		// Positionnement des composants
 		this.add(this.panelDessin, BorderLayout.CENTER);
-		this.add(this.panelBtns, BorderLayout.EAST);
+		this.add(panelDroite, BorderLayout.EAST);
+
+		panelDroite.add(spBtns);
+		panelDroite.add(spJoueurs);
 
 		this.setVisible(true);
 	}
