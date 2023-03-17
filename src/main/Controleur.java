@@ -34,6 +34,51 @@ public class Controleur {
 		this.actions = new ArrayList<Action>();
 	}
 
+	// GETTERS BOUTONS
+	public int getOutilActif() { 
+		return ((FrameApp)this.fenetreActive).getOutilActif();
+	}
+
+	public Color getCouleur() {
+		return ((FrameApp)this.fenetreActive).getCouleur();
+	}
+
+	public boolean getRemplir() {
+		return ((FrameApp)this.fenetreActive).getRemplir();
+	}
+
+	public int getEpaisseur() {
+		return ((FrameApp)this.fenetreActive).getEpaisseur();
+	}
+
+	// DESSINS
+	public void dessinerPinceau() {
+		// TODO
+	}
+
+	public void dessinerLigne() {
+		// TODO
+	}
+
+	public void dessinerCarre() {
+		// TODO
+	}
+
+	public void dessinerCercle() {
+		// TODO
+	}
+
+	public void dessinerTexte(int x, int y, String texte) {
+		this.actions.add(new Action(this.joueur, new FormeTexte(x, y, this.getEpaisseur(), this.getCouleur(), texte)));
+		((FrameApp)this.fenetreActive).majIHM();
+	}
+
+	public void dessinerSeau(int x, int y) {
+		this.actions.add(new Action(this.joueur, new FormeSeau(x, y, 0, this.getCouleur())));
+		((FrameApp)this.fenetreActive).majIHM();
+	}
+
+	// PARTIES
 	public void creerPartie() {
 		this.serveur = new DessinServeur(this);
 		try {

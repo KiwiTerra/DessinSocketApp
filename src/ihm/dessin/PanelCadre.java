@@ -10,6 +10,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -142,8 +143,24 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 	{
 		if (SwingUtilities.isLeftMouseButton(e))
 		{
-			Point p = new Point( (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom)), 
-			                     (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom)) );
+			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
+			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+
+			if (this.ctrl.getOutilActif() == 4)
+			{
+				String texte = JOptionPane.showInputDialog ( this, "Que voulez-vous écrire ?", "Choisir texte", JOptionPane.QUESTION_MESSAGE );
+
+				if (texte != null)
+				{
+					this.ctrl.dessinerTexte(x, y, texte);
+					System.out.println("Texte : " + texte);
+				}
+			}
+
+			if (this.ctrl.getOutilActif() == 5)
+			{
+				this.ctrl.dessinerSeau(x, y);
+			}
 		}
 	}
 

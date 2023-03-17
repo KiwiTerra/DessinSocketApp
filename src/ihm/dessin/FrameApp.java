@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 import main.Controleur;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
@@ -54,5 +55,25 @@ public class FrameApp extends JFrame {
 		panelDroite.add(spUsers);
 
 		this.setVisible(true);
+	}
+
+	public void majIHM() {
+		this.panelCadre.majIHM();
+	}
+
+	public int getOutilActif() { 
+		return this.panelBtns.getOutilActif();
+	}
+
+	public Color getCouleur() {
+		return this.panelBtns.getCouleur();
+	}
+
+	public boolean getRemplir() {
+		return this.panelBtns.getRemplir();
+	}
+
+	public int getEpaisseur() {
+		return this.panelBtns.getEpaisseur();
 	}
 }

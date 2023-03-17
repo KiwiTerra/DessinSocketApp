@@ -35,7 +35,7 @@ public class PanelDessin extends JPanel
 		AffineTransform at = new AffineTransform();
 		at.scale(zoomFactor, zoomFactor);
         g2.transform(at);
-
+System.out.println(ctrl.getActions().size());
 		for (Action a : ctrl.getActions())
 		{
 			a.getForme().dessiner(g2);
