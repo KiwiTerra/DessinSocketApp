@@ -2,19 +2,25 @@ package ihm.dessin;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 
-public class PanelButtons extends JPanel
-{
-	private final int NB_BTN = 6;
+public class PanelButtons extends JPanel implements ActionListener, ChangeListener {
+
+	private final int      NB_BTN      = 6;
+	private final String[] TAB_IMG_BTN = new String[] {"Pinceau", "Ligne", "Rectangle", "Rond", "Texte", "Seau"};
 
 	private JButton    btnCoul;
 	private JSeparator sep1;
@@ -32,27 +38,110 @@ public class PanelButtons extends JPanel
 		this.setPreferredSize(new Dimension(250, 482));
 		this.setBackground(Color.LIGHT_GRAY);
 
-		// Création des composants
-		btnCoul = new JButton("Couleur");
-		sep1    = new JSeparator();
+		//    Création des composants	
+
+		// Couleurs
+		this.btnCoul = new JButton("Couleur");
+		this.btnCoul.setBackground(Color.WHITE);
+
+		this.sep1    = new JSeparator();
 		
-		tabTbnOutils = new JButton[NB_BTN];
-		for (int i = 0; i < NB_BTN; i++) {
-			tabTbnOutils[i] = new JButton();
-			tabTbnOutils[i].setPreferredSize(new Dimension(50, 50));
+		// Outils
+		this.tabTbnOutils = new JButton[this.NB_BTN];
+		for (int i = 0; i < this.NB_BTN; i++) {
+			this.tabTbnOutils[i] = new JButton();
+			this.tabTbnOutils[i].setPreferredSize(new Dimension(50, 50));
+			this.tabTbnOutils[i].setText("./" + this.TAB_IMG_BTN[i] + ".png");
 		}
-		cbRemplir = new JCheckBox("Remplir les formes");
-		btnUndo   = new JButton("UNDO");
-		sep2      = new JSeparator();
+		this.tabTbnOutils[0].setSelected(true);
+		this.tabTbnOutils[0].setBackground(Color.GREEN);
 
-		sliEpai = new JSlider();
-		lblEpai = new JLabel("111");
+		this.cbRemplir = new JCheckBox("Remplir les formes");
+		this.cbRemplir.setBackground(Color.LIGHT_GRAY);
 
-		// Positionnement des composants
+		this.btnUndo   = new JButton("UNDO");
+		this.btnUndo.setBackground(Color.WHITE);
+
+		this.sep2      = new JSeparator();
+
+		// Epaisseur
+		this.sliEpai = new JSlider();
+		this.sliEpai.setBackground(Color.LIGHT_GRAY);
+		this.sliEpai.setMinimum(1);
+		this.sliEpai.setMaximum(300);
+		this.sliEpai.setValue(1);
+
+		this.lblEpai = new JLabel("  1");
+		this.lblEpai.setBackground(Color.LIGHT_GRAY);
+
+		//    Positionnement des composants
 		this.setLayout(this.creerLayout());
 
 
-	}                                                       
+		//    Activation des composants
+		this.btnCoul.addActionListener(this);
+
+		for (int i = 0; i < this.NB_BTN; i++) {
+			this.tabTbnOutils[i].addActionListener(this);
+		}
+
+		this.btnUndo.addActionListener(this);
+
+		this.sliEpai.addChangeListener(this);
+	}  
+
+	public String getOutil() { 
+		for( int i = 0; i < this.NB_BTN; i++) 
+			if (this.tabTbnOutils[i].isSelected()) 
+				return this.TAB_IMG_BTN[i];
+
+		return "Pinceau";
+	}
+
+	public Color getCouleur() {
+		return this.btnCoul.getBackground();
+	}
+
+	public boolean getRemplir() {
+		return this.cbRemplir.isSelected();
+	}
+
+	public int getEpaisseur() {
+		return this.sliEpai.getValue();
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getSource() == this.btnCoul) {
+			Color couleur = JColorChooser.showDialog(this, "Choisir une couleur", Color.WHITE);
+
+			if (couleur != null) {
+				this.btnCoul.setBackground(couleur);
+			}
+		}
+		
+		for (int i = 0; i < this.NB_BTN; i++) {
+			if (e.getSource() == this.tabTbnOutils[i]) {
+				
+				for (int j = 0; j < this.NB_BTN; j++) {
+					this.tabTbnOutils[j].setSelected(false);
+					this.tabTbnOutils[j].setBackground(Color.WHITE);
+				}
+				
+				this.tabTbnOutils[i].setSelected(true);
+				this.tabTbnOutils[i].setBackground(Color.GREEN);
+			}
+		}
+
+		if (e.getSource() == this.btnUndo) {
+			System.out.println("UNDO");
+		}
+	}
+
+	public void stateChanged(ChangeEvent e) {
+		
+		this.lblEpai.setText(String.format("%3d",this.sliEpai.getValue()));
+	}
          
 	private GroupLayout creerLayout() {
 
@@ -60,74 +149,73 @@ public class PanelButtons extends JPanel
 		
 		layout.setHorizontalGroup(
 			layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-			.addComponent(sep1, GroupLayout.Alignment.TRAILING)
-			.addComponent(sep2)
+			.addComponent(this.sep1, GroupLayout.Alignment.TRAILING)
+			.addComponent(this.sep2)
 			.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
 				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addComponent(btnCoul)
+				.addComponent(this.btnCoul)
 				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 			.addGroup(layout.createSequentialGroup()
 				.addGap(25, 25, 25)
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 					.addGroup(layout.createSequentialGroup()
-						.addComponent(sliEpai, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+						.addComponent(this.sliEpai, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-						.addComponent(lblEpai, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+						.addComponent(this.lblEpai, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(23, Short.MAX_VALUE))
 					.addGroup(layout.createSequentialGroup()
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addComponent(cbRemplir, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(this.cbRemplir, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addGroup(layout.createSequentialGroup()
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-									.addComponent(tabTbnOutils[3], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addComponent(tabTbnOutils[0], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addComponent(this.tabTbnOutils[3], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(this.tabTbnOutils[0], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-									.addComponent(tabTbnOutils[4], GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addComponent(tabTbnOutils[1], GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addComponent(this.tabTbnOutils[4], GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(this.tabTbnOutils[1], GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-									.addComponent(tabTbnOutils[5], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addComponent(tabTbnOutils[2], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+									.addComponent(this.tabTbnOutils[5], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(this.tabTbnOutils[2], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 						.addGap(25, 25, 25))))
 			.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
 				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addComponent(btnUndo)
+				.addComponent(this.btnUndo)
 				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		layout.setVerticalGroup(
 			layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 			.addGroup(layout.createSequentialGroup()
 				.addGap(33, 33, 33)
-				.addComponent(btnCoul)
+				.addComponent(this.btnCoul)
 				.addGap(36, 36, 36)
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-					.addComponent(tabTbnOutils[2], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(this.tabTbnOutils[2], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGroup(layout.createSequentialGroup()
-						.addComponent(sep1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+						.addComponent(this.sep1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addComponent(tabTbnOutils[0], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(tabTbnOutils[1], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+							.addComponent(this.tabTbnOutils[0], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(this.tabTbnOutils[1], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 				.addGap(18, 18, 18)
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-					.addComponent(tabTbnOutils[3], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(tabTbnOutils[4], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(tabTbnOutils[5], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addComponent(this.tabTbnOutils[3], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(this.tabTbnOutils[4], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(this.tabTbnOutils[5], GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addGap(26, 26, 26)
-				.addComponent(cbRemplir)
+				.addComponent(this.cbRemplir)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				.addComponent(btnUndo)
+				.addComponent(this.btnUndo)
 				.addGap(11, 11, 11)
-				.addComponent(sep2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+				.addComponent(this.sep2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-					.addComponent(sliEpai, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblEpai))
+					.addComponent(this.sliEpai, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(this.lblEpai))
 				.addContainerGap(122, Short.MAX_VALUE))
 		);
 
 		return layout;
 	}
-	           
 }
