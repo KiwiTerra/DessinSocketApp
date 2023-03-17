@@ -18,7 +18,7 @@ public class FrameApp extends JFrame {
 	private final int LONGUEUR = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	private final int HAUTEUR  = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
-	private PanelDessin  panelDessin;
+	private PanelCadre   panelCadre;
 	private PanelButtons panelBtns;
 	private PanelJoueurs panelJoueurs;
 
@@ -32,7 +32,7 @@ public class FrameApp extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création des composants
-		this.panelDessin = new PanelDessin(ctrl);
+		this.panelCadre = new PanelCadre(ctrl);
 
 		JPanel panelDroite = new JPanel(new GridLayout(2, 1));
 		this.panelBtns     = new PanelButtons(ctrl);
@@ -47,7 +47,7 @@ public class FrameApp extends JFrame {
 		spJoueurs.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
 		// Positionnement des composants
-		this.add(this.panelDessin, BorderLayout.CENTER);
+		this.add(this.panelCadre, BorderLayout.CENTER);
 		this.add(panelDroite, BorderLayout.EAST);
 
 		panelDroite.add(spBtns);
