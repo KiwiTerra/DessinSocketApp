@@ -46,8 +46,12 @@ public class Controleur {
 
 		this.serveur.start();
 
-		this.actions.add(new Action(joueur, new FormeCercle(50, 50, 2, Color.RED, 50, 50, true)));
-		this.actions.add(new Action(joueur, new FormeCarre(100, 100, 2, Color.GREEN, 50, 50, true)));
+		// Test
+		this.actions.add(new Action(joueur, new FormeCercle(50, 50, 2, Color.RED, 100, 50, false)));
+		this.actions.add(new Action(joueur, new FormeCarre(100, 100, 2, Color.GREEN, 50, 50, false)));
+		this.actions.add(new Action(joueur, new FormeTexte(50, 200, 25, Color.BLACK, "ZIZI")));
+		this.actions.add(new Action(joueur, new FormeLigne(200, 50, 4, Color.BLACK, 300, 200)));
+		this.actions.add(new Action(joueur, new FormeSeau(125, 125, 2, Color.PINK)));
 
 		this.afficherFenetreDessin();
 	}
@@ -66,6 +70,7 @@ public class Controleur {
 	}
 
 	public void afficherFenetreDessin() {
+
 		this.fenetreActive.dispose();
 		this.fenetreActive = new FrameApp(this);
 	}

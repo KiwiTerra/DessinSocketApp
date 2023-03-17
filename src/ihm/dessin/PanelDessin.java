@@ -36,8 +36,6 @@ public class PanelDessin extends JPanel
 		at.scale(zoomFactor, zoomFactor);
         g2.transform(at);
 
-		// Dessin de test
-
 		for (Action a : ctrl.getActions())
 		{
 			a.getForme().dessiner(g2);
