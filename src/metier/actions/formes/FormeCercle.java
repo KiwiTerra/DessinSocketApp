@@ -1,10 +1,11 @@
 package metier.actions.formes;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.awt.BasicStroke;
 import java.awt.Color;
 
-public class FormeCercle extends Forme {
+public class FormeCercle extends Forme implements Serializable {
 
 	private int longueur;
 	private int hauteur;

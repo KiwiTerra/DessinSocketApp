@@ -6,7 +6,6 @@ import metier.Joueur;
 import metier.actions.Action;
 import metier.actions.formes.*;
 import metier.sockets.DessinClient;
-import metier.sockets.DessinClientServeur;
 import metier.sockets.DessinServeur;
 
 import java.awt.Color;
@@ -35,10 +34,6 @@ public class Controleur {
 		this.actions = new ArrayList<Action>();
 	}
 
-	public ArrayList<Action> getActions() {
-		return this.actions;
-	}
-
 	public void creerPartie() {
 		this.serveur = new DessinServeur(this);
 		try {
@@ -50,6 +45,10 @@ public class Controleur {
 		}
 
 		this.serveur.start();
+
+		this.actions.add(new Action(joueur, new FormeCercle(50, 50, 2, Color.RED, 50, 50, true)));
+		this.actions.add(new Action(joueur, new FormeCarre(100, 100, 2, Color.GREEN, 50, 50, true)));
+
 		this.afficherFenetreDessin();
 	}
 
@@ -57,19 +56,16 @@ public class Controleur {
 		this.client = new DessinClient(this, ip);
 		try {
 			this.client.connexion();
+			this.client.start();
+			this.client.envoyerPseudo(this.joueur.getNom());
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this.fenetreActive, "Impossible de se connecter au serveur", "Erreur", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-
-		this.client.start();
-		this.afficherFenetreDessin();
 	}
 
 	public void afficherFenetreDessin() {
-		this.actions.add(new Action(joueur, new FormeCercle(50, 50, 2, Color.RED, 50, 50, true)));
-		this.actions.add(new Action(joueur, new FormeCarre(100, 100, 2, Color.GREEN, 50, 50, true)));
 		this.fenetreActive.dispose();
 		this.fenetreActive = new FrameApp(this);
 	}
@@ -107,9 +103,21 @@ public class Controleur {
         } catch (Exception e) {e.printStackTrace();}
     }
 
+	public boolean verifierPseudo(String pseudo) {
+        return true;
+    }
+
     public Joueur getJoueur() {
         return joueur;
     }
+
+	public ArrayList<Action> getActions() {
+		return this.actions;
+	}
+
+	public void setActions(ArrayList<Action> actions) {
+		this.actions = actions;
+	}
 
     public void quitter() {
         this.fenetreActive.dispose();

@@ -5,8 +5,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 import main.Controleur;
+import metier.actions.Action;
 
 public class DessinClient extends Thread {
 
@@ -28,18 +32,19 @@ public class DessinClient extends Thread {
     public void run()
     {
         try
-        {
-            System.out.println("En attente d'un message");
-            int type = this.recevoirEntier();
-            System.out.println("Type reçu: " + type);
-            while (type > 0)
+        {   
+            while (true)
             {
+                int type = this.recevoirEntier();
+                System.out.println("Type reçu: " + type);
+
                 System.out.println("Début du traitement de la chaine");
                 this.traiterChaine(type);
-                type = this.recevoirEntier();
+                System.out.println("Fin du traitement de la chaine");
             }
         } catch (Exception e)
         {
+            
             e.printStackTrace();
         }
     }
@@ -48,6 +53,24 @@ public class DessinClient extends Thread {
     {
         switch(type)
         {
+            case Messages.AJOUTER_JOUEUR:
+                String valide = this.lire();
+                boolean pseudoValide = Boolean.parseBoolean(valide);
+                if(!pseudoValide)
+                {
+                    JOptionPane.showMessageDialog(null, "Ce pseudo est déjà utilisé par un joueur !", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    this.deconnexion();
+                    return;
+                }
+
+                this.envoyer(Messages.DEMANDER_ACTIONS);
+                break;
+            case Messages.DEMANDER_ACTIONS:
+                Object actions = this.input.readObject();
+                this.ctrl.setActions((ArrayList<Action>) actions);
+
+                this.ctrl.afficherFenetreDessin();
+                break;
             default:
                 break;
         }
@@ -81,6 +104,17 @@ public class DessinClient extends Thread {
         this.socket = new Socket(this.ip, 3000);
         this.input = new ObjectInputStream(this.socket.getInputStream());
         this.output = new ObjectOutputStream(this.socket.getOutputStream());
+    }
+
+    public void deconnexion() throws IOException
+    {
+        if(!this.socket.isClosed())
+            this.socket.close();
+    }
+
+    public void envoyerPseudo(String nom) throws IOException {
+        this.envoyer(Messages.AJOUTER_JOUEUR);
+        this.envoyer(nom);
     }
     
 }

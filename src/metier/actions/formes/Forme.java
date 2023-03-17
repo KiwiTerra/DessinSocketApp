@@ -2,8 +2,9 @@ package metier.actions.formes;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public abstract class Forme 
+public abstract class Forme implements Serializable
 {
 	protected int x;
 	protected int y;
