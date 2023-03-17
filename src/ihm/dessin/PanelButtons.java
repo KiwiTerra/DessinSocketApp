@@ -41,7 +41,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 	public PanelButtons(Controleur ctrl) {	
 		
 		this.ctrl = ctrl;
-		this.setPreferredSize(new Dimension(250, 500));
+		this.setPreferredSize(new Dimension(250, 400));
 		this.setBackground(Color.LIGHT_GRAY);
 
 		//    Création des composants	
@@ -56,6 +56,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		this.tabTbnOutils = new JButton[this.NB_BTN];
 		for (int i = 0; i < this.NB_BTN; i++) {
 			this.tabTbnOutils[i] = new JButton();
+			this.tabTbnOutils[i].setBackground(Color.WHITE);
 			this.tabTbnOutils[i].setPreferredSize(new Dimension(50, 50));
 			this.tabTbnOutils[i].setText("./" + this.TAB_IMG_BTN[i] + ".png");
 		}
@@ -121,9 +122,8 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		if (e.getSource() == this.btnCoul) {
 			Color couleur = JColorChooser.showDialog(this, "Choisir une couleur", Color.WHITE);
 
-			if (couleur != null) {
+			if (couleur != null) 
 				this.btnCoul.setBackground(couleur);
-			}
 		}
 		
 		for (int i = 0; i < this.NB_BTN; i++) {
@@ -146,7 +146,6 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 	}
 
 	public void stateChanged(ChangeEvent e) {
-		
 		this.lblEpai.setText(String.format("%3d",this.sliEpai.getValue()));
 	}
          
@@ -214,7 +213,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 				.addComponent(this.cbRemplir)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addComponent(this.btnUndo)
-				.addGap(11, 11, 11)
+				.addGap(15, 15, 15)
 				.addComponent(this.sep2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)

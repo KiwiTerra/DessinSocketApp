@@ -3,6 +3,7 @@ package ihm.dessin;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import main.Controleur;
 
@@ -37,12 +38,20 @@ public class FrameApp extends JFrame {
 		this.panelBtns     = new PanelButtons(ctrl);
 		this.panelJoueurs  = new PanelJoueurs(ctrl);
 
+		JScrollPane spBtns = new JScrollPane(panelBtns);
+		spBtns.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		spBtns.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+		JScrollPane spJoueurs = new JScrollPane(panelJoueurs);
+		spJoueurs.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		spJoueurs.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
 		// Positionnement des composants
 		this.add(this.panelDessin, BorderLayout.CENTER);
 		this.add(panelDroite, BorderLayout.EAST);
 
-		panelDroite.add(this.panelBtns);
-		panelDroite.add(this.panelJoueurs);
+		panelDroite.add(spBtns);
+		panelDroite.add(spJoueurs);
 
 		this.setVisible(true);
 	}
