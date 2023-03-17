@@ -29,6 +29,10 @@ public class Controleur {
         return joueur;
     }
 
+    public void quitter() {
+        this.fenetreActive.dispose();
+    }
+
     public static void main(String[] args) {
         new Controleur();
     }

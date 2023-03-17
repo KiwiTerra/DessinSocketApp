@@ -86,12 +86,36 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
 
 
         this.btnTempAppli.addActionListener(this);
+        this.btnCreerSalon.addActionListener(this);
+        this.btnRejoindreSalon.addActionListener(this);
+        this.btnQuitter.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.btnTempAppli) {
             this.ctrl.afficherFenetreDessin();
+        }
+
+        if (e.getSource() == this.btnCreerSalon) {
+            this.ctrl.afficherFenetreDessin();
+        }
+
+        if (e.getSource() == this.btnRejoindreSalon) {
+            this.afficherRejoindrePartie();
+        }
+
+        if (e.getSource() == this.btnQuitter) {
+            this.ctrl.quitter();
+        }
+    }
+
+    public void afficherRejoindrePartie ()
+    {
+        String ip = JOptionPane.showInputDialog ( this, "Entrez l'adresse IP de l'hôte", "Rejoindre une partie", JOptionPane.QUESTION_MESSAGE );
+        if ( ip != null )
+        {
+            //this.ctrl.rejoindrePartie ( ip );
         }
     }
 }

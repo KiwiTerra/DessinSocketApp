@@ -23,5 +23,4 @@ public class FrameDemarrage extends JFrame {
         this.setVisible(true);
     }
 
-
 }
