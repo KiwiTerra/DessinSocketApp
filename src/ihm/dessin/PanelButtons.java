@@ -13,6 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import main.Controleur;
+
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
@@ -21,6 +24,8 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 
 	private final int      NB_BTN      = 6;
 	private final String[] TAB_IMG_BTN = new String[] {"Pinceau", "Ligne", "Rectangle", "Rond", "Texte", "Seau"};
+
+	private Controleur ctrl;
 
 	private JButton    btnCoul;
 	private JSeparator sep1;
@@ -33,9 +38,10 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 	private JSlider sliEpai;
 	private JLabel  lblEpai; 
 	
-	public PanelButtons() {	
+	public PanelButtons(Controleur ctrl) {	
 		
-		this.setPreferredSize(new Dimension(250, 482));
+		this.ctrl = ctrl;
+		this.setPreferredSize(new Dimension(250, 500));
 		this.setBackground(Color.LIGHT_GRAY);
 
 		//    Création des composants	
@@ -130,6 +136,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 				
 				this.tabTbnOutils[i].setSelected(true);
 				this.tabTbnOutils[i].setBackground(Color.GREEN);
+				break;
 			}
 		}
 
