@@ -9,8 +9,8 @@ import main.Controleur;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 
-public class FrameApp extends JFrame
-{
+public class FrameApp extends JFrame {
+
 	private Controleur ctrl;
 
 	private final int LONGUEUR = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -19,8 +19,8 @@ public class FrameApp extends JFrame
 	private PanelButtons panelBtns;
 	private JPanel panelDessin;
 
-	public FrameApp(Controleur ctrl)
-	{
+	public FrameApp(Controleur ctrl) {
+		
 		this.ctrl = ctrl;
 
 		this.setSize(this.LONGUEUR, this.HAUTEUR);
