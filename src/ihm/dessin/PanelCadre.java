@@ -30,8 +30,8 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 	// attributs pour le drag
     private boolean cliqueGaucheDrag;
     private boolean estDrag;
-    private double  xDecalage = 0;
-    private double  yDecalage = 0;
+    private double  xDecalage = 50;
+    private double  yDecalage = 50;
     private int     xDiff;
     private int     yDiff;
     private Point   pDebutDrag;
@@ -41,7 +41,7 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
     public PanelCadre(Controleur ctrl)
     {
         this.ctrl = ctrl;
-		this.taillePlateau = new int[] { 1000, 1000 };
+		this.taillePlateau = new int[] { 500, 500 };
 
 		this.setLayout(null);
 		this.setBackground(Color.GRAY);
@@ -51,6 +51,7 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
 		// Ajout des composants
 		this.add(this.panelImage);
+		this.panelImage.setBounds(50, 50, this.taillePlateau[0], this.taillePlateau[1]);
 
 		// Ajout des listeners
 		this.addMouseWheelListener (this);

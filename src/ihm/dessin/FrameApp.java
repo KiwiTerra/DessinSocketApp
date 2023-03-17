@@ -20,7 +20,7 @@ public class FrameApp extends JFrame {
 
 	private PanelCadre   panelCadre;
 	private PanelButtons panelBtns;
-	private PanelJoueurs panelJoueurs;
+	private PanelUsers   panelUsers;
 
 	public FrameApp(Controleur ctrl) {
 
@@ -36,22 +36,22 @@ public class FrameApp extends JFrame {
 
 		JPanel panelDroite = new JPanel(new GridLayout(2, 1));
 		this.panelBtns     = new PanelButtons(ctrl);
-		this.panelJoueurs  = new PanelJoueurs(ctrl);
+		this.panelUsers    = new PanelUsers  (ctrl);
 
 		JScrollPane spBtns = new JScrollPane(panelBtns);
 		spBtns.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		spBtns.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-		JScrollPane spJoueurs = new JScrollPane(panelJoueurs);
-		spJoueurs.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		spJoueurs.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		JScrollPane spUsers = new JScrollPane(panelUsers);
+		spUsers.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		spUsers.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
 		// Positionnement des composants
 		this.add(this.panelCadre, BorderLayout.CENTER);
-		this.add(panelDroite, BorderLayout.EAST);
+		this.add(panelDroite    , BorderLayout.EAST  );
 
 		panelDroite.add(spBtns);
-		panelDroite.add(spJoueurs);
+		panelDroite.add(spUsers);
 
 		this.setVisible(true);
 	}

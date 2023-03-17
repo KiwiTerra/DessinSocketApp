@@ -9,7 +9,6 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -63,15 +62,15 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 			this.tabTbnOutils[i] = new JButton();
 			this.tabTbnOutils[i].setBackground(Color.WHITE);
 			this.tabTbnOutils[i].setPreferredSize(new Dimension(50, 50));
-			this.tabTbnOutils[i].setText("./" + this.TAB_IMG_BTN[i] + ".png");
+			
+			String img = "./ressources/img/outils/" + this.TAB_IMG_BTN[i] + ".png";
+			try{
+				this.tabTbnOutils[i].setIcon(new ImageIcon(ImageIO.read(new File(img)).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+			}catch(Exception e){}
 		}
 		this.tabTbnOutils[0].setSelected(true);
 		this.tabTbnOutils[0].setBackground(Color.GREEN);
-		try{
-		this.tabTbnOutils[0].setIcon(new ImageIcon(ImageIO.read(new File("./ressources/img/outils/Pinceau.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-		}catch(Exception e){
-			System.out.println("erreur");
-		}
+		
 
 		this.cbRemplir = new JCheckBox("Remplir les formes");
 		this.cbRemplir.setBackground(Color.LIGHT_GRAY);

@@ -8,17 +8,17 @@ import javax.swing.JPanel;
 
 import main.Controleur;
 
-public class PanelJoueurs extends JPanel {
+public class PanelUsers extends JPanel {
 	
 	private Controleur ctrl;
 
-	public PanelJoueurs(Controleur ctrl) {
+	public PanelUsers(Controleur ctrl) {
 		
 		this.ctrl = ctrl;
 
 		this.setPreferredSize(new Dimension(250, 0));
-		this.setBackground(Color.GRAY);
+		this.setBackground(Color.LIGHT_GRAY);
 
-		this.add(new JLabel("joueurs"));
+		this.add(new JLabel("Utilisateurs"));
 	}
 }
