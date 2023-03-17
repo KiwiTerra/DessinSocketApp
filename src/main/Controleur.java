@@ -3,12 +3,17 @@ package main;
 import ihm.demarrage.FrameDemarrage;
 import ihm.dessin.FrameApp;
 import metier.Joueur;
+import metier.actions.Action;
+import metier.actions.formes.*;
 import metier.sockets.DessinClient;
 import metier.sockets.DessinClientServeur;
 import metier.sockets.DessinServeur;
+
+import java.awt.Color;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -22,10 +27,16 @@ public class Controleur {
 	private DessinServeur serveur;
 	private DessinClient client;
 
+	private ArrayList<Action> actions; 
 
 	public Controleur() {
 		this.joueur = new Joueur(this.chargerNomJoueur());
 		this.fenetreActive = new FrameDemarrage(this);
+		this.actions = new ArrayList<Action>();
+	}
+
+	public ArrayList<Action> getActions() {
+		return this.actions;
 	}
 
 	public void creerPartie() {
@@ -57,6 +68,8 @@ public class Controleur {
 	}
 
 	public void afficherFenetreDessin() {
+		this.actions.add(new Action(joueur, new FormeCercle(50, 50, 2, Color.RED, 50, 50, true)));
+		this.actions.add(new Action(joueur, new FormeCarre(100, 100, 2, Color.GREEN, 50, 50, true)));
 		this.fenetreActive.dispose();
 		this.fenetreActive = new FrameApp(this);
 	}

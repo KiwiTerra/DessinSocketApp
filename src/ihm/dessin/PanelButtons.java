@@ -70,7 +70,6 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		}
 		this.tabTbnOutils[0].setSelected(true);
 		this.tabTbnOutils[0].setBackground(Color.GREEN);
-		
 
 		this.cbRemplir = new JCheckBox("Remplir les formes");
 		this.cbRemplir.setBackground(Color.LIGHT_GRAY);

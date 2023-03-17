@@ -8,6 +8,7 @@ import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
 
 import main.Controleur;
+import metier.actions.Action;
 
 public class PanelDessin extends JPanel
 {
@@ -36,10 +37,11 @@ public class PanelDessin extends JPanel
         g2.transform(at);
 
 		// Dessin de test
-		g2.setColor(Color.RED);
-		g2.fillRect(0, 0, 100, 100);
-		g2.setColor(Color.BLUE);
-		g2.fillRect(100, 100, 100, 100);
+
+		for (Action a : ctrl.getActions())
+		{
+			a.getForme().dessiner(g2);
+		}
 	}
 	
 	public void majZoom(double zoomFactor)
