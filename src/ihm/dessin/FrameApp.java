@@ -20,12 +20,13 @@ public class FrameApp extends JFrame {
 	private JPanel panelDessin;
 
 	public FrameApp(Controleur ctrl) {
-		
+
 		this.ctrl = ctrl;
 
 		this.setSize(this.LONGUEUR, this.HAUTEUR);
 		this.setTitle("DessinSocketApp");
 		this.setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création des composants
 		this.panelBtns = new PanelButtons();
