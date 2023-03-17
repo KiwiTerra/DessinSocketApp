@@ -30,6 +30,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 	private final String[] TAB_IMG_BTN = new String[] {"Pinceau", "Ligne", "Rectangle", "Rond", "Texte", "Seau"};
 
 	private Controleur ctrl;
+	private int 	   outilActif;
 
 	private JButton    btnCoul;
 	private JSeparator sep1;
@@ -68,8 +69,8 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 				this.tabTbnOutils[i].setIcon(new ImageIcon(ImageIO.read(new File(img)).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
 			}catch(Exception e){}
 		}
-		this.tabTbnOutils[0].setSelected(true);
 		this.tabTbnOutils[0].setBackground(Color.GREEN);
+		this.outilActif = 0;
 
 		this.cbRemplir = new JCheckBox("Remplir les formes");
 		this.cbRemplir.setBackground(Color.LIGHT_GRAY);
@@ -96,21 +97,16 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		//    Activation des composants
 		this.btnCoul.addActionListener(this);
 
-		for (int i = 0; i < this.NB_BTN; i++) {
+		for (int i = 0; i < this.NB_BTN; i++)
 			this.tabTbnOutils[i].addActionListener(this);
-		}
 
 		this.btnUndo.addActionListener(this);
 
 		this.sliEpai.addChangeListener(this);
 	}  
 
-	public String getOutil() { 
-		for( int i = 0; i < this.NB_BTN; i++) 
-			if (this.tabTbnOutils[i].isSelected()) 
-				return this.TAB_IMG_BTN[i];
-
-		return "Pinceau";
+	public int getOutilActif() { 
+		return this.outilActif;
 	}
 
 	public Color getCouleur() {
@@ -137,13 +133,12 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		for (int i = 0; i < this.NB_BTN; i++) {
 			if (e.getSource() == this.tabTbnOutils[i]) {
 				
-				for (int j = 0; j < this.NB_BTN; j++) {
-					this.tabTbnOutils[j].setSelected(false);
+				for (int j = 0; j < this.NB_BTN; j++)
 					this.tabTbnOutils[j].setBackground(Color.WHITE);
-				}
 				
-				this.tabTbnOutils[i].setSelected(true);
+				
 				this.tabTbnOutils[i].setBackground(Color.GREEN);
+				this.outilActif = i;
 				break;
 			}
 		}
