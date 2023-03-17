@@ -89,6 +89,7 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
         this.btnCreerSalon.addActionListener(this);
         this.btnRejoindreSalon.addActionListener(this);
         this.btnQuitter.addActionListener(this);
+        this.btnModifier.addActionListener(this);
     }
 
     @Override
@@ -108,6 +109,10 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
         if (e.getSource() == this.btnQuitter) {
             this.ctrl.quitter();
         }
+
+        if (e.getSource() == this.btnModifier) {
+            this.afficherModifierNom();
+        }
     }
 
     public void afficherRejoindrePartie ()
@@ -116,6 +121,17 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
         if ( ip != null )
         {
             //this.ctrl.rejoindrePartie ( ip );
+        }
+    }
+
+    public void afficherModifierNom ()
+    {
+        String nom = JOptionPane.showInputDialog ( this, "Entrez votre nouveau nom", "Modifier le nom", JOptionPane.QUESTION_MESSAGE );
+        if ( nom != null )
+        {
+            this.ctrl.modifierNomJoueur(nom);
+            this.lblBienvenue.setText("Bienvenue " + this.ctrl.getJoueur().getNom());
+            this.lblBienvenue.setBounds(150, 135, 100 + (this.ctrl.getJoueur().getNom().length() * 9), 50);
         }
     }
 }
