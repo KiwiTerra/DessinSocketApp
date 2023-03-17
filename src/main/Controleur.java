@@ -6,8 +6,13 @@ import metier.Joueur;
 import metier.sockets.DessinClient;
 import metier.sockets.DessinClientServeur;
 import metier.sockets.DessinServeur;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.*;
+
 
 public class Controleur {
 
@@ -57,8 +62,37 @@ public class Controleur {
 	}
 
 	public String chargerNomJoueur() {
-		return "Joueur" + (int) (Math.random() * 1000);
-	}
+        File fichier = new File("nomJoueur.txt");
+        String nomJoueur = "Joueur" + (int)(Math.random()*1000);
+        if (!fichier.exists()) {
+            try {
+                fichier.createNewFile();
+                FileWriter fw = new FileWriter(fichier);
+                fw.write(nomJoueur);
+                fw.close();
+                return nomJoueur;
+            } catch (IOException e) {e.printStackTrace();}
+        }
+        else {
+            try {
+                Scanner sc = new Scanner(fichier);
+                nomJoueur = sc.nextLine();
+                sc.close();
+                return nomJoueur;
+            } catch (IOException e) {e.printStackTrace();}
+        }
+        return nomJoueur;
+    }
+
+    public void modifierNomJoueur(String nomJoueur) {
+        try {
+            FileWriter fw = new FileWriter("nomJoueur.txt", false);
+            fw.write(nomJoueur);
+            fw.close();
+            this.joueur.setNom(nomJoueur);
+
+        } catch (Exception e) {e.printStackTrace();}
+    }
 
     public Joueur getJoueur() {
         return joueur;
