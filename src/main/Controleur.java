@@ -65,8 +65,9 @@ public class Controleur {
 		((FrameApp)this.fenetreActive).majIHM();
 	}
 
-	public void dessinerCercle() {
-		// TODO
+	public void dessinerCercle(int x, int y, int longueur, int hauteur) {
+		this.actions.add(new Action(this.joueur, new FormeCercle(x, y, this.getEpaisseur(), this.getCouleur(), longueur, hauteur, this.getRemplir())));
+		((FrameApp)this.fenetreActive).majIHM();
 	}
 
 	public void dessinerTexte(int x, int y, String texte) {

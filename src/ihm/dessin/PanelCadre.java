@@ -15,7 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import main.Controleur;
+import metier.actions.formes.Forme;
 import metier.actions.formes.FormeCarre;
+import metier.actions.formes.FormeCercle;
 
 public class PanelCadre extends JPanel implements MouseWheelListener, MouseListener, MouseMotionListener
 {
@@ -137,18 +139,31 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
 
-			if (this.ctrl.getOutilActif() == 2)
+			if (this.ctrl.getOutilActif() == 2 || this.ctrl.getOutilActif() == 3)
 			{
+				Forme f = null;
 				int longueur = (int) (x - this.pDebutForme.getX());
 				int hauteur  = (int) (y - this.pDebutForme.getY());
-				FormeCarre f = new FormeCarre(
-					(int) this.pDebutForme.getX(), 
-					(int) this.pDebutForme.getY(), 
-					this.ctrl.getEpaisseur(), 
-					this.ctrl.getCouleur(), 
-					longueur, hauteur, 
-					this.ctrl.getRemplir()
-				);
+
+				if (this.ctrl.getOutilActif() == 2)
+					f = new FormeCarre(
+						(int) this.pDebutForme.getX(), 
+						(int) this.pDebutForme.getY(), 
+						this.ctrl.getEpaisseur(), 
+						this.ctrl.getCouleur(), 
+						longueur, hauteur, 
+						this.ctrl.getRemplir()
+					);
+
+				if (this.ctrl.getOutilActif() == 3)
+					f = new FormeCercle(
+						(int) this.pDebutForme.getX(), 
+						(int) this.pDebutForme.getY(), 
+						this.ctrl.getEpaisseur(), 
+						this.ctrl.getCouleur(), 
+						longueur, hauteur, 
+						this.ctrl.getRemplir()
+					);
 
 				this.panelImage.setFormeEnCours(f);
 				this.panelImage.majIHM();
@@ -215,14 +230,20 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
 
-			if (this.ctrl.getOutilActif() == 2)
+			if (this.ctrl.getOutilActif() == 2 || this.ctrl.getOutilActif() == 3)
 			{
 				int longueur = (int) (x - this.pDebutForme.getX());
 				int hauteur  = (int) (y - this.pDebutForme.getY());
 
 				this.panelImage.setFormeEnCours(null);
-				this.ctrl.dessinerCarre((int) this.pDebutForme.getX(), 
-					(int) this.pDebutForme.getY(), longueur, hauteur);
+
+				if (this.ctrl.getOutilActif() == 2)
+					this.ctrl.dessinerCarre((int) this.pDebutForme.getX(), 
+						(int) this.pDebutForme.getY(), longueur, hauteur);
+
+				if (this.ctrl.getOutilActif() == 3)
+					this.ctrl.dessinerCercle((int) this.pDebutForme.getX(), 
+						(int) this.pDebutForme.getY(), longueur, hauteur);
 			}
 		}
 

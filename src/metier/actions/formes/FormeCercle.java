@@ -20,6 +20,18 @@ public class FormeCercle extends Forme implements Serializable {
 	}
 
 	public void dessiner(Graphics2D g) {
+		// vérification des valeurs
+		if (longueur < 0) {
+			this.x += longueur;
+			longueur *= -1;
+		}
+
+		if (hauteur < 0) {
+			this.y += hauteur;
+			hauteur *= -1;
+		}
+
+		// dessin
 		g.setStroke(new BasicStroke(this.stroke));
 		g.setColor(this.couleur);
 
