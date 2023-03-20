@@ -60,8 +60,9 @@ public class Controleur {
 		// TODO
 	}
 
-	public void dessinerCarre() {
-		// TODO
+	public void dessinerCarre(int x, int y, int longueur, int hauteur) {
+		this.actions.add(new Action(this.joueur, new FormeCarre(x, y, this.getEpaisseur(), this.getCouleur(), longueur, hauteur, this.getRemplir())));
+		((FrameApp)this.fenetreActive).majIHM();
 	}
 
 	public void dessinerCercle() {

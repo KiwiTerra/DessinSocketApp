@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import main.Controleur;
+import metier.actions.formes.FormeCarre;
 
 public class PanelCadre extends JPanel implements MouseWheelListener, MouseListener, MouseMotionListener
 {
@@ -29,13 +30,17 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 	private double facteurZoomMin = 0.75;
 
 	// attributs pour le drag
-    private boolean cliqueGaucheDrag;
+    private boolean cliqueDroitDrag;
     private boolean estDrag;
     private double  xDecalage = 50;
     private double  yDecalage = 50;
     private int     xDiff;
     private int     yDiff;
     private Point   pDebutDrag;
+
+	// attributs pour le dessin
+	private Point pDebutForme;
+
 
 	private PanelDessin panelImage;
 
@@ -62,7 +67,7 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
 	public void majIHM()
 	{
-		if (cliqueGaucheDrag) 
+		if (cliqueDroitDrag) 
 		{
 			this.panelImage.setBounds( (int) (this.xDecalage + this.xDiff ), 
 			                           (int) (this.yDecalage + this.yDiff ),
@@ -73,7 +78,7 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			{
 				this.xDecalage += this.xDiff;
 				this.yDecalage += this.yDiff;
-				this.cliqueGaucheDrag = false;
+				this.cliqueDroitDrag = false;
 			}
 		}
 
@@ -127,6 +132,29 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
     public void mouseDragged(MouseEvent e) 
 	{
+		if (SwingUtilities.isLeftMouseButton(e))
+		{
+			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
+			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+
+			if (this.ctrl.getOutilActif() == 2)
+			{
+				int longueur = (int) (x - this.pDebutForme.getX());
+				int hauteur  = (int) (y - this.pDebutForme.getY());
+				FormeCarre f = new FormeCarre(
+					(int) this.pDebutForme.getX(), 
+					(int) this.pDebutForme.getY(), 
+					this.ctrl.getEpaisseur(), 
+					this.ctrl.getCouleur(), 
+					longueur, hauteur, 
+					this.ctrl.getRemplir()
+				);
+
+				this.panelImage.setFormeEnCours(f);
+				this.panelImage.majIHM();
+			}
+		}
+
 		if (SwingUtilities.isRightMouseButton(e))
 		{
 			Point pointActu = e.getLocationOnScreen();
@@ -134,7 +162,7 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			this.xDiff = pointActu.x - this.pDebutDrag.x;
 			this.yDiff = pointActu.y - this.pDebutDrag.y;
 
-			this.cliqueGaucheDrag = true;
+			this.cliqueDroitDrag = true;
 			majIHM();
 		}
     }
@@ -166,6 +194,13 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
     public void mousePressed(MouseEvent e) 
 	{
+		if (SwingUtilities.isLeftMouseButton(e))
+		{
+			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
+			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+			this.pDebutForme = new Point(x, y);
+		}
+
 		if (SwingUtilities.isRightMouseButton(e))
 		{
 			this.estDrag = false;
@@ -175,6 +210,22 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
     public void mouseReleased(MouseEvent e) 
 	{
+		if (SwingUtilities.isLeftMouseButton(e))
+		{
+			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
+			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+
+			if (this.ctrl.getOutilActif() == 2)
+			{
+				int longueur = (int) (x - this.pDebutForme.getX());
+				int hauteur  = (int) (y - this.pDebutForme.getY());
+
+				this.panelImage.setFormeEnCours(null);
+				this.ctrl.dessinerCarre((int) this.pDebutForme.getX(), 
+					(int) this.pDebutForme.getY(), longueur, hauteur);
+			}
+		}
+
 		if (SwingUtilities.isRightMouseButton(e))
 		{
         	this.estDrag = true;

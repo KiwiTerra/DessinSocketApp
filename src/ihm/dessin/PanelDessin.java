@@ -9,10 +9,12 @@ import javax.swing.JPanel;
 
 import main.Controleur;
 import metier.actions.Action;
+import metier.actions.formes.Forme;
 
 public class PanelDessin extends JPanel
 {
 	private Controleur ctrl;
+	private Forme formeEnCours;
 
 	private int[] taillePlateau;	
 	private double zoomFactor = 1;
@@ -21,6 +23,7 @@ public class PanelDessin extends JPanel
 	{
 		this.ctrl = ctrl;
 		this.taillePlateau = taillePlateau;
+		this.formeEnCours = null;
 
 		this.setSize(taillePlateau[0], taillePlateau[1]);
 	}
@@ -35,11 +38,20 @@ public class PanelDessin extends JPanel
 		AffineTransform at = new AffineTransform();
 		at.scale(zoomFactor, zoomFactor);
         g2.transform(at);
-System.out.println("nb action : " + ctrl.getActions().size());
+
+		g2.setColor(Color.WHITE);
+		g2.drawRect(0, 0, taillePlateau[0], taillePlateau[1]);
+
+		System.out.println("nb action : " + ctrl.getActions().size());
 		for (Action a : ctrl.getActions())
-		{
 			a.getForme().dessiner(g2);
-		}
+
+		if (this.formeEnCours != null)
+			this.formeEnCours.dessiner(g2);
+	}
+
+	public void setFormeEnCours(Forme f) {
+		this.formeEnCours = f;
 	}
 	
 	public void majZoom(double zoomFactor)
