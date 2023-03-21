@@ -1,6 +1,7 @@
 package ihm.dessin;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -8,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -213,7 +215,13 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
 			if (this.ctrl.getOutilActif() == 5)
 			{
-				this.ctrl.dessinerSeau(x, y, this.panelImage);
+				BufferedImage image = new BufferedImage(this.taillePlateau[0], this.taillePlateau[1], BufferedImage.TYPE_INT_ARGB);
+
+				Graphics2D g2d = image.createGraphics();
+				this.panelImage.print(g2d);
+				g2d.dispose();
+
+				this.ctrl.dessinerSeau(x, y, image);
 			}
 		}
 	}

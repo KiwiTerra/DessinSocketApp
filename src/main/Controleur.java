@@ -10,6 +10,7 @@ import metier.sockets.DessinClient;
 import metier.sockets.DessinServeur;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -77,8 +78,8 @@ public class Controleur {
 		((FrameApp)this.fenetreActive).majIHM();
 	}
 
-	public void dessinerSeau(int x, int y, PanelDessin panel) {
-		this.actions.add(new Action(this.joueur, new FormeSeau(x, y, 0, this.getCouleur(), panel)));
+	public void dessinerSeau(int x, int y, BufferedImage image) {
+		this.actions.add(new Action(this.joueur, new FormeSeau(x, y, 0, this.getCouleur(), image)));
 		((FrameApp)this.fenetreActive).majIHM();
 	}
 
