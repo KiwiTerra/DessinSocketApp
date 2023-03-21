@@ -75,10 +75,10 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		this.cbRemplir = new JCheckBox("Remplir les formes");
 		this.cbRemplir.setBackground(Color.LIGHT_GRAY);
 
-		this.btnUndo   = new JButton("UNDO");
+		this.btnUndo = new JButton("UNDO");
 		this.btnUndo.setBackground(Color.WHITE);
 
-		this.sep2      = new JSeparator();
+		this.sep2 = new JSeparator();
 
 		// Epaisseur
 		this.sliEpai = new JSlider();

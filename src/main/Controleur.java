@@ -2,6 +2,7 @@ package main;
 
 import ihm.demarrage.FrameDemarrage;
 import ihm.dessin.FrameApp;
+import ihm.dessin.PanelDessin;
 import metier.Joueur;
 import metier.actions.Action;
 import metier.actions.formes.*;
@@ -76,8 +77,8 @@ public class Controleur {
 		((FrameApp)this.fenetreActive).majIHM();
 	}
 
-	public void dessinerSeau(int x, int y) {
-		this.actions.add(new Action(this.joueur, new FormeSeau(x, y, 0, this.getCouleur())));
+	public void dessinerSeau(int x, int y, PanelDessin panel) {
+		this.actions.add(new Action(this.joueur, new FormeSeau(x, y, 0, this.getCouleur(), panel)));
 		((FrameApp)this.fenetreActive).majIHM();
 	}
 
@@ -99,7 +100,7 @@ public class Controleur {
 		this.actions.add(new Action(joueur, new FormeCarre(100, 100, 2, Color.GREEN, 50, 50, false)));
 		this.actions.add(new Action(joueur, new FormeTexte(50, 200, 25, Color.BLACK, "ZIZI")));
 		this.actions.add(new Action(joueur, new FormeLigne(200, 50, 4, Color.BLACK, 300, 200)));
-		this.actions.add(new Action(joueur, new FormeSeau(125, 125, 2, Color.PINK)));
+		//this.actions.add(new Action(joueur, new FormeSeau(125, 125, 2, Color.PINK)));
 
 		this.afficherFenetreDessin();
 	}

@@ -12,20 +12,25 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
+import ihm.dessin.PanelDessin;
+
 public class FormeSeau extends Forme implements Serializable {
-	public FormeSeau(int x, int y, int stroke, Color couleur) {
+
+	private PanelDessin panel;
+
+	public FormeSeau(int x, int y, int stroke, Color couleur, PanelDessin panel) {
 		super(x, y, stroke, couleur);
+
+		this.panel = panel;
 	}
 
 	public void dessiner(Graphics2D g) {
-
-
-	
-		
 		//BufferedImage image = null;
-		BufferedImage image = new BufferedImage(g.getDeviceConfiguration().getBounds().width, g.getDeviceConfiguration().getBounds().height, BufferedImage.TYPE_INT_ARGB);
-		//System.out.println(g.getDeviceConfiguration().getBounds().width);
-       // System.out.println(g.getDeviceConfiguration().getBounds().height);
+		BufferedImage image = new BufferedImage(this.panel.getWidth(), this.panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		Graphics2D g2d = image.createGraphics();
+		this.panel.print(g2d);
+		g2d.dispose();
 
 	   try {
 		System.out.println("transformation image");
@@ -35,7 +40,7 @@ public class FormeSeau extends Forme implements Serializable {
 		e.printStackTrace();
 	}
 
-
+/*
 		Color oldColor = new Color(0);
 
 		Queue<Point> q = new LinkedList<Point>();
@@ -73,6 +78,6 @@ public class FormeSeau extends Forme implements Serializable {
 
         }
 		
-		g.drawImage(image, 0, 0, null);
+		g.drawImage(image, 0, 0, null);*/
 	}
 }

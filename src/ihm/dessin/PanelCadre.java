@@ -213,7 +213,7 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
 			if (this.ctrl.getOutilActif() == 5)
 			{
-				this.ctrl.dessinerSeau(x, y);
+				this.ctrl.dessinerSeau(x, y, this.panelImage);
 			}
 		}
 	}
