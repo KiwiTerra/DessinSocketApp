@@ -56,8 +56,9 @@ public class Controleur {
 		// TODO
 	}
 
-	public void dessinerLigne() {
-		// TODO
+	public void dessinerLigne(int x, int y, int xArrive, int yArrive) {
+		this.actions.add(new Action(this.joueur, new FormeLigne(x, y, this.getEpaisseur(), this.getCouleur(), xArrive, yArrive)));
+		((FrameApp)this.fenetreActive).majIHM();
 	}
 
 	public void dessinerCarre(int x, int y, int longueur, int hauteur) {

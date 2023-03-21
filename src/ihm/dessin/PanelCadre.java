@@ -18,13 +18,12 @@ import main.Controleur;
 import metier.actions.formes.Forme;
 import metier.actions.formes.FormeCarre;
 import metier.actions.formes.FormeCercle;
+import metier.actions.formes.FormeLigne;
 
 public class PanelCadre extends JPanel implements MouseWheelListener, MouseListener, MouseMotionListener
 {
     private Controleur ctrl;
 	private int[]      taillePlateau;
-
-	private JButton btnCentrer;
 
 	// attributs pour le zoom
 	private double facteurZoom    = 1;
@@ -42,7 +41,6 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
 	// attributs pour le dessin
 	private Point pDebutForme;
-
 
 	private PanelDessin panelImage;
 
@@ -139,6 +137,19 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
 
+			if (this.ctrl.getOutilActif() == 1)
+			{
+				FormeLigne f = new FormeLigne(
+					(int) this.pDebutForme.getX(), 
+					(int) this.pDebutForme.getY(), 
+					this.ctrl.getEpaisseur(), 
+					this.ctrl.getCouleur(), x, y
+				);
+
+				this.panelImage.setFormeEnCours(f);
+				this.panelImage.majIHM();
+			}
+
 			if (this.ctrl.getOutilActif() == 2 || this.ctrl.getOutilActif() == 3)
 			{
 				Forme f = null;
@@ -229,6 +240,13 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 		{
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+
+			if (this.ctrl.getOutilActif() == 1)
+			{
+				this.panelImage.setFormeEnCours(null);
+				this.ctrl.dessinerLigne(
+					(int) this.pDebutForme.getX(), (int) this.pDebutForme.getY(), x, y);
+			}
 
 			if (this.ctrl.getOutilActif() == 2 || this.ctrl.getOutilActif() == 3)
 			{

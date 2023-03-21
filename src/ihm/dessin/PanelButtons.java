@@ -55,7 +55,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		this.btnCoul = new JButton("Couleur");
 		this.btnCoul.setBackground(Color.WHITE);
 
-		this.sep1    = new JSeparator();
+		this.sep1 = new JSeparator();
 		
 		// Outils
 		this.tabTbnOutils = new JButton[this.NB_BTN];
@@ -85,7 +85,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		this.sliEpai.setBackground(Color.LIGHT_GRAY);
 		this.sliEpai.setMinimum(1);
 		this.sliEpai.setMaximum(300);
-		this.sliEpai.setValue(1);
+		this.sliEpai.setValue(5);
 
 		this.lblEpai = new JLabel("  1");
 		this.lblEpai.setBackground(Color.LIGHT_GRAY);
