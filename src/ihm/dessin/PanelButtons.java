@@ -84,7 +84,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		this.sliEpai = new JSlider();
 		this.sliEpai.setBackground(Color.LIGHT_GRAY);
 		this.sliEpai.setMinimum(1);
-		this.sliEpai.setMaximum(300);
+		this.sliEpai.setMaximum(100);
 		this.sliEpai.setValue(5);
 
 		this.lblEpai = new JLabel("  1");
