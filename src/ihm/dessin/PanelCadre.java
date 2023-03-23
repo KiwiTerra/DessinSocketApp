@@ -247,25 +247,25 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
 
-			if (this.ctrl.getOutilActif() == 1)
+			if (this.ctrl.getOutilActif() == Outils.LIGNE)
 			{
 				this.panelImage.setFormeEnCours(null);
 				this.ctrl.dessinerLigne(
 					(int) this.pDebutForme.getX(), (int) this.pDebutForme.getY(), x, y);
 			}
 
-			if (this.ctrl.getOutilActif() == 2 || this.ctrl.getOutilActif() == 3)
+			if (this.ctrl.getOutilActif() == Outils.CARRE || this.ctrl.getOutilActif() == Outils.CERCLE)
 			{
 				int longueur = (int) (x - this.pDebutForme.getX());
 				int hauteur  = (int) (y - this.pDebutForme.getY());
 
 				this.panelImage.setFormeEnCours(null);
 
-				if (this.ctrl.getOutilActif() == 2)
+				if (this.ctrl.getOutilActif() == Outils.CARRE)
 					this.ctrl.dessinerCarre((int) this.pDebutForme.getX(), 
 						(int) this.pDebutForme.getY(), longueur, hauteur);
 
-				if (this.ctrl.getOutilActif() == 3)
+				if (this.ctrl.getOutilActif() == Outils.CERCLE)
 					this.ctrl.dessinerCercle((int) this.pDebutForme.getX(), 
 						(int) this.pDebutForme.getY(), longueur, hauteur);
 			}
