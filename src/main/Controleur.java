@@ -6,8 +6,9 @@ import ihm.dessin.PanelDessin;
 import metier.Joueur;
 import metier.actions.Action;
 import metier.actions.formes.*;
-import metier.sockets.DessinClient;
-import metier.sockets.DessinServeur;
+import metier.reseaux.multicast.UDPMulticast;
+import metier.reseaux.sockets.client.DessinClient;
+import metier.reseaux.sockets.serveur.DessinServeur;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -59,33 +60,42 @@ public class Controleur {
 		FormePinceau pinceau = new FormePinceau(x, y, this.getEpaisseur(), this.getCouleur());
 		pinceau.ajouterPoint(points);
 
-		this.actions.add(new Action(this.joueur, pinceau));
-		((FrameApp)this.fenetreActive).majIHM();
+		this.dessiner(new Action(this.joueur, pinceau), true);
 	}
 
 	public void dessinerLigne(int x, int y, int xArrive, int yArrive) {
-		this.actions.add(new Action(this.joueur, new FormeLigne(x, y, this.getEpaisseur(), this.getCouleur(), xArrive, yArrive)));
-		((FrameApp)this.fenetreActive).majIHM();
+		this.dessiner(new Action(this.joueur, new FormeLigne(x, y, this.getEpaisseur(), this.getCouleur(), xArrive, yArrive)), true);
 	}
 
 	public void dessinerCarre(int x, int y, int longueur, int hauteur) {
-		this.actions.add(new Action(this.joueur, new FormeCarre(x, y, this.getEpaisseur(), this.getCouleur(), longueur, hauteur, this.getRemplir())));
-		((FrameApp)this.fenetreActive).majIHM();
+		this.dessiner(new Action(this.joueur, new FormeCarre(x, y, this.getEpaisseur(), this.getCouleur(), longueur, hauteur, this.getRemplir())), true);
 	}
 
 	public void dessinerCercle(int x, int y, int longueur, int hauteur) {
-		this.actions.add(new Action(this.joueur, new FormeCercle(x, y, this.getEpaisseur(), this.getCouleur(), longueur, hauteur, this.getRemplir())));
-		((FrameApp)this.fenetreActive).majIHM();
+		this.dessiner(new Action(this.joueur, new FormeCercle(x, y, this.getEpaisseur(), this.getCouleur(), longueur, hauteur, this.getRemplir())), true);
 	}
 
 	public void dessinerTexte(int x, int y, String texte) {
-		this.actions.add(new Action(this.joueur, new FormeTexte(x, y, this.getEpaisseur(), this.getCouleur(), texte)));
-		((FrameApp)this.fenetreActive).majIHM();
+		this.dessiner(new Action(this.joueur, new FormeTexte(x, y, this.getEpaisseur(), this.getCouleur(), texte)), true);
 	}
 
 	public void dessinerSeau(int x, int y, BufferedImage image) {
-		this.actions.add(new Action(this.joueur, new FormeSeau(x, y, 0, this.getCouleur(), image)));
+		this.dessiner(new Action(this.joueur, new FormeSeau(x, y, 0, this.getCouleur(), image)), true);
+	}
+
+	
+	public void dessiner(Action action, boolean envoyerAuReseau) {
+		this.actions.add(action);
 		((FrameApp)this.fenetreActive).majIHM();
+
+		if(envoyerAuReseau) {
+			UDPMulticast udpMulticast = this.serveur != null ? this.serveur.getMulticast() : this.client.getMulticast();
+			try {
+				udpMulticast.envoyerAction(action);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// PARTIES

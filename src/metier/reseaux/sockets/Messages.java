@@ -1,4 +1,4 @@
-package metier.sockets;
+package metier.reseaux.sockets;
 
 public class Messages {
 

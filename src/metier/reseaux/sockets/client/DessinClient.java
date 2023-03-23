@@ -1,8 +1,9 @@
-package metier.sockets;
+package metier.reseaux.sockets.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import javax.swing.JOptionPane;
 
 import main.Controleur;
 import metier.actions.Action;
+import metier.reseaux.multicast.UDPMulticast;
+import metier.reseaux.sockets.Messages;
 
 public class DessinClient extends Thread {
 
@@ -20,6 +23,7 @@ public class DessinClient extends Thread {
 
     private ObjectInputStream input;
     private ObjectOutputStream output;
+    private UDPMulticast multicast;
 
 
     public DessinClient(Controleur ctrl, String ip)
@@ -68,8 +72,8 @@ public class DessinClient extends Thread {
             case Messages.DEMANDER_ACTIONS:
                 Object actions = this.input.readObject();
                 this.ctrl.setActions((ArrayList<Action>) actions);
-
                 this.ctrl.afficherFenetreDessin();
+                
                 break;
             default:
                 break;
@@ -104,17 +108,28 @@ public class DessinClient extends Thread {
         this.socket = new Socket(this.ip, 3000);
         this.input = new ObjectInputStream(this.socket.getInputStream());
         this.output = new ObjectOutputStream(this.socket.getOutputStream());
+        
+        this.multicast = new UDPMulticast(this.ctrl, InetAddress.getByName("239.255.80.84"), 8084);
+        this.multicast.demarrer();
+        System.out.println("Multicast démarré");
     }
 
     public void deconnexion() throws IOException
     {
         if(!this.socket.isClosed())
             this.socket.close();
+
+        if(this.multicast != null)
+            this.multicast.deconnexion();
     }
 
     public void envoyerPseudo(String nom) throws IOException {
         this.envoyer(Messages.AJOUTER_JOUEUR);
         this.envoyer(nom);
+    }
+
+    public UDPMulticast getMulticast() {
+        return multicast;
     }
     
 }

@@ -1,4 +1,4 @@
-package metier.sockets;
+package metier.reseaux.sockets.serveur;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import main.Controleur;
 import metier.actions.Action;
+import metier.reseaux.sockets.Messages;
 
 public class DessinClientServeur extends Thread {
 
