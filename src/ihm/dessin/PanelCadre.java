@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -22,6 +23,7 @@ import metier.actions.formes.Forme;
 import metier.actions.formes.FormeCarre;
 import metier.actions.formes.FormeCercle;
 import metier.actions.formes.FormeLigne;
+import metier.actions.formes.FormePinceau;
 
 public class PanelCadre extends JPanel implements MouseWheelListener, MouseListener, MouseMotionListener
 {
@@ -44,6 +46,8 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
 	// attributs pour le dessin
 	private Point pDebutForme;
+	private FormePinceau pinceau;
+	private ArrayList<Point> pointsPinceau;
 
 	private PanelDessin panelImage;
 
@@ -140,6 +144,13 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
 
+			if(this.ctrl.getOutilActif() == Outils.PINCEAU)
+			{
+				this.pointsPinceau.add(new Point(x, y));
+				this.pinceau.ajouterPoint(new Point(x, y));
+				this.panelImage.majIHM();
+			}
+
 			if (this.ctrl.getOutilActif() == Outils.LIGNE)
 			{
 				FormeLigne f = new FormeLigne(
@@ -231,6 +242,17 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
 			this.pDebutForme = new Point(x, y);
+
+			if(this.ctrl.getOutilActif() == Outils.PINCEAU)
+			{
+				this.pointsPinceau = new ArrayList<Point>();
+				this.pinceau = new FormePinceau(
+					x, y, this.ctrl.getEpaisseur(), this.ctrl.getCouleur()
+				);
+
+				this.panelImage.setFormeEnCours(this.pinceau);
+				this.panelImage.majIHM();
+			}
 		}
 
 		if (SwingUtilities.isRightMouseButton(e))
@@ -246,6 +268,13 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 		{
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+
+			if(this.ctrl.getOutilActif() == Outils.PINCEAU)
+			{
+				this.ctrl.dessinerPinceau((int) this.pDebutForme.getX(), (int) this.pDebutForme.getY(), this.pointsPinceau);
+				this.panelImage.setFormeEnCours(null);
+				this.pinceau = null;
+			}
 
 			if (this.ctrl.getOutilActif() == Outils.LIGNE)
 			{

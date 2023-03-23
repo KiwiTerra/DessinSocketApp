@@ -10,14 +10,14 @@ public class FormePinceau extends Forme implements Serializable {
 
     private ArrayList<Point> points;
 
-    public FormePinceau(int x, int y, int stroke, Color couleur, ArrayList<Point> points) {
+    public FormePinceau(int x, int y, int stroke, Color couleur) {
         super(x, y, stroke, couleur);
 
         this.couleur = couleur;
         this.x = x;
         this.y = y;
         this.stroke = stroke;
-        this.points = points;
+        this.points = new ArrayList<Point>();
     }
     
     
@@ -27,5 +27,13 @@ public class FormePinceau extends Forme implements Serializable {
             g.setColor(couleur);
             g.fillOval(p.x, p.y, stroke, stroke);
         }
+    }
+
+    public void ajouterPoint(Point p) {
+        points.add(p);
+    }
+
+    public void ajouterPoint(ArrayList<Point> p) {
+        points.addAll(p);
     }
 }

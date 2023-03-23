@@ -10,6 +10,7 @@ import metier.sockets.DessinClient;
 import metier.sockets.DessinServeur;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
@@ -54,8 +55,12 @@ public class Controleur {
 	}
 
 	// DESSINS
-	public void dessinerPinceau() {
-		// TODO
+	public void dessinerPinceau(int x, int y, ArrayList<Point> points) {
+		FormePinceau pinceau = new FormePinceau(x, y, this.getEpaisseur(), this.getCouleur());
+		pinceau.ajouterPoint(points);
+
+		this.actions.add(new Action(this.joueur, pinceau));
+		((FrameApp)this.fenetreActive).majIHM();
 	}
 
 	public void dessinerLigne(int x, int y, int xArrive, int yArrive) {
