@@ -18,6 +18,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ihm.constantes.Outils;
 import main.Controleur;
 
 import javax.swing.JPanel;
@@ -25,9 +26,7 @@ import javax.swing.JSeparator;
 import javax.swing.JSlider;
 
 public class PanelButtons extends JPanel implements ActionListener, ChangeListener {
-
-	private final int      NB_BTN      = 6;
-	private final String[] TAB_IMG_BTN = new String[] {"Pinceau", "Ligne", "Rectangle", "Rond", "Texte", "Seau"};
+	private int NB_BTN;
 
 	private Controleur ctrl;
 	private int 	   outilActif;
@@ -58,13 +57,14 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 		this.sep1 = new JSeparator();
 		
 		// Outils
+		this.NB_BTN = Outils.NOM_IMAGES_BTN.length;
 		this.tabTbnOutils = new JButton[this.NB_BTN];
 		for (int i = 0; i < this.NB_BTN; i++) {
 			this.tabTbnOutils[i] = new JButton();
 			this.tabTbnOutils[i].setBackground(Color.WHITE);
 			this.tabTbnOutils[i].setPreferredSize(new Dimension(50, 50));
 			
-			String img = "./ressources/img/outils/" + this.TAB_IMG_BTN[i] + ".png";
+			String img = "./ressources/img/outils/" + Outils.NOM_IMAGES_BTN[i] + ".png";
 			try{
 				this.tabTbnOutils[i].setIcon(new ImageIcon(ImageIO.read(new File(img)).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
 			}catch(Exception e){}

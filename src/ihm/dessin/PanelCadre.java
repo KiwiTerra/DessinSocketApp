@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import ihm.constantes.Outils;
 import main.Controleur;
 import metier.actions.formes.Forme;
 import metier.actions.formes.FormeCarre;
@@ -139,7 +140,7 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
 
-			if (this.ctrl.getOutilActif() == 1)
+			if (this.ctrl.getOutilActif() == Outils.LIGNE)
 			{
 				FormeLigne f = new FormeLigne(
 					(int) this.pDebutForme.getX(), 
@@ -152,13 +153,13 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 				this.panelImage.majIHM();
 			}
 
-			if (this.ctrl.getOutilActif() == 2 || this.ctrl.getOutilActif() == 3)
+			if (this.ctrl.getOutilActif() == Outils.CARRE || this.ctrl.getOutilActif() == Outils.CERCLE)
 			{
 				Forme f = null;
 				int longueur = (int) (x - this.pDebutForme.getX());
 				int hauteur  = (int) (y - this.pDebutForme.getY());
 
-				if (this.ctrl.getOutilActif() == 2)
+				if (this.ctrl.getOutilActif() == Outils.CARRE)
 					f = new FormeCarre(
 						(int) this.pDebutForme.getX(), 
 						(int) this.pDebutForme.getY(), 
@@ -168,7 +169,7 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 						this.ctrl.getRemplir()
 					);
 
-				if (this.ctrl.getOutilActif() == 3)
+				if (this.ctrl.getOutilActif() == Outils.CERCLE)
 					f = new FormeCercle(
 						(int) this.pDebutForme.getX(), 
 						(int) this.pDebutForme.getY(), 
@@ -202,18 +203,15 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
 			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
 
-			if (this.ctrl.getOutilActif() == 4)
+			if (this.ctrl.getOutilActif() == Outils.TEXTE)
 			{
 				String texte = JOptionPane.showInputDialog ( this, "Que voulez-vous écrire ?", "Choisir texte", JOptionPane.QUESTION_MESSAGE );
 
 				if (texte != null)
-				{
 					this.ctrl.dessinerTexte(x, y, texte);
-					System.out.println("Texte : " + texte);
-				}
 			}
 
-			if (this.ctrl.getOutilActif() == 5)
+			if (this.ctrl.getOutilActif() == Outils.SEAU)
 			{
 				BufferedImage image = new BufferedImage(this.taillePlateau[0], this.taillePlateau[1], BufferedImage.TYPE_INT_ARGB);
 
