@@ -14,16 +14,15 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JSlider;
 import javax.swing.LayoutStyle;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ihm.constantes.Outils;
 import main.Controleur;
-
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.JSlider;
 
 public class PanelButtons extends JPanel implements ActionListener, ChangeListener {
 	private int NB_BTN;
@@ -104,6 +103,10 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 
 		this.sliEpai.addChangeListener(this);
 	}  
+
+	public void setCouleur(Color c) {
+		this.btnCoul.setBackground(c);
+	}
 
 	public int getOutilActif() { 
 		return this.outilActif;

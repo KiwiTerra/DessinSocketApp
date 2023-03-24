@@ -61,6 +61,10 @@ public class FrameApp extends JFrame {
 		this.panelCadre.majIHM();
 	}
 
+	public void setCouleur(Color c) {
+		this.panelBtns.setCouleur(c);
+	}
+
 	public int getOutilActif() { 
 		return this.panelBtns.getOutilActif();
 	}

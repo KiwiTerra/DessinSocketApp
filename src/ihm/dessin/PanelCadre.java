@@ -7,12 +7,9 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -25,15 +22,10 @@ import metier.actions.formes.FormeCercle;
 import metier.actions.formes.FormeLigne;
 import metier.actions.formes.FormePinceau;
 
-public class PanelCadre extends JPanel implements MouseWheelListener, MouseListener, MouseMotionListener
+public class PanelCadre extends JPanel implements MouseListener, MouseMotionListener
 {
     private Controleur ctrl;
 	private int[]      taillePlateau;
-
-	// attributs pour le zoom
-	private double facteurZoom    = 1;
-	private double facteurZoomMax = 2;
-	private double facteurZoomMin = 0.75;
 
 	// attributs pour le drag
     private boolean cliqueDroitDrag;
@@ -67,7 +59,6 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 		this.panelImage.setBounds(50, 50, this.taillePlateau[0], this.taillePlateau[1]);
 
 		// Ajout des listeners
-		this.addMouseWheelListener (this);
         this.addMouseMotionListener(this);
         this.addMouseListener      (this);
     }
@@ -78,8 +69,8 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 		{
 			this.panelImage.setBounds( (int) (this.xDecalage + this.xDiff ), 
 			                           (int) (this.yDecalage + this.yDiff ),
-			                           (int) (this.taillePlateau[0] * this.facteurZoom), 
-									   (int) (this.taillePlateau[1] * this.facteurZoom) );
+			                           this.taillePlateau[0], 
+									   this.taillePlateau[1] );
 
 			if (this.estDrag) 
 			{
@@ -91,58 +82,13 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 
 		this.panelImage.majIHM();
 	}
-
-	public void centrer()
-	{
-		int largeur = this.getWidth();
-		int hauteur = this.getHeight();
-		
-
-		// Calcul du facteur de zoom maximal
-		double zoomLargeur = (double) largeur / this.taillePlateau[0];
-		double zoomHauteur = (double) hauteur / this.taillePlateau[1];
-		this.facteurZoom = Math.min(zoomLargeur, zoomHauteur);
-
-		// Vérification des limites du zoom
-		if (this.facteurZoom > this.facteurZoomMax)
-			this.facteurZoomMax = this.facteurZoom + 1.0;
-		
-		if (this.facteurZoom < this.facteurZoomMin)
-			this.facteurZoomMin = this.facteurZoom - 0.5;
-
-
-		// Calcul du décalage pour centrer l'image
-		this.xDecalage = (largeur - (this.taillePlateau[0] * this.facteurZoom)) / 2;
-		this.yDecalage = (hauteur - (this.taillePlateau[1] * this.facteurZoom)) / 2;
-
-		// Mise à jour de l'image
-		this.panelImage.setBounds( (int)  this.xDecalage, (int) this.yDecalage,
-		                           (int) (this.taillePlateau[0] * facteurZoom), 
-								   (int) (this.taillePlateau[1] * facteurZoom) );
-		this.panelImage.majZoom(this.facteurZoom);
-	}
-
-    public void mouseWheelMoved(MouseWheelEvent e) 
-	{
-        if (e.getWheelRotation() < 0 && this.facteurZoom * 1.1 < this.facteurZoomMax) 
-		{
-            this.facteurZoom *= 1.1;
-			this.panelImage.majZoom(this.facteurZoom);
-        }
-
-        if (e.getWheelRotation() > 0 && this.facteurZoom / 1.1 > this.facteurZoomMin) 
-		{
-            this.facteurZoom /= 1.1;
-			this.panelImage.majZoom(this.facteurZoom);
-        }
-    }
-
+    
     public void mouseDragged(MouseEvent e) 
 	{
 		if (SwingUtilities.isLeftMouseButton(e))
 		{
-			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
-			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+			int x = (int) (e.getX() - this.xDecalage);
+			int y = (int) (e.getY() - this.yDecalage);
 
 			if(this.ctrl.getOutilActif() == Outils.PINCEAU)
 			{
@@ -211,26 +157,29 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 	{
 		if (SwingUtilities.isLeftMouseButton(e))
 		{
-			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
-			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+			int x = (int) (e.getX() - this.xDecalage);
+			int y = (int) (e.getY() - this.yDecalage);
 
 			if (this.ctrl.getOutilActif() == Outils.TEXTE)
 			{
-				String texte = JOptionPane.showInputDialog ( this, "Que voulez-vous écrire ?", "Choisir texte", JOptionPane.QUESTION_MESSAGE );
+				String texte = JOptionPane.showInputDialog(this, "Que voulez-vous écrire ?", "Choisir texte", JOptionPane.QUESTION_MESSAGE);
 
 				if (texte != null)
 					this.ctrl.dessinerTexte(x, y, texte);
 			}
 
-			if (this.ctrl.getOutilActif() == Outils.SEAU)
+			if (this.ctrl.getOutilActif() == Outils.PIPETTE)
 			{
-				BufferedImage image = new BufferedImage(this.taillePlateau[0], this.taillePlateau[1], BufferedImage.TYPE_INT_ARGB);
+				if ( x >= 0 && x < this.taillePlateau[0] && y >= 0 && y < this.taillePlateau[1] )
+				{
+					// transformer le panel dessin en BufferedImage
+					BufferedImage image = new BufferedImage(this.taillePlateau[0], this.taillePlateau[1], BufferedImage.TYPE_INT_RGB);
+					Graphics2D g2d = image.createGraphics();
+					this.panelImage.paint(g2d);
+					g2d.dispose();
 
-				Graphics2D g2d = image.createGraphics();
-				this.panelImage.print(g2d);
-				g2d.dispose();
-
-				this.ctrl.dessinerSeau(x, y, image);
+					this.ctrl.setCouleur(new Color(image.getRGB(x, y)));
+				}
 			}
 		}
 	}
@@ -239,8 +188,8 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 	{
 		if (SwingUtilities.isLeftMouseButton(e))
 		{
-			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
-			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+			int x = (int) (e.getX() - this.xDecalage);
+			int y = (int) (e.getY() - this.yDecalage);
 			this.pDebutForme = new Point(x, y);
 
 			if(this.ctrl.getOutilActif() == Outils.PINCEAU)
@@ -266,8 +215,8 @@ public class PanelCadre extends JPanel implements MouseWheelListener, MouseListe
 	{
 		if (SwingUtilities.isLeftMouseButton(e))
 		{
-			int x = (int) ((e.getX() - this.xDecalage) * (1 / this.facteurZoom));
-			int y = (int) ((e.getY() - this.yDecalage) * (1 / this.facteurZoom));
+			int x = (int) (e.getX() - this.xDecalage);
+			int y = (int) (e.getY() - this.yDecalage);
 
 			if(this.ctrl.getOutilActif() == Outils.PINCEAU)
 			{

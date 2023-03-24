@@ -75,14 +75,9 @@ public class Controleur {
 	public void dessinerTexte(int x, int y, String texte) {
 		this.dessiner(new Action(this.joueur, new FormeTexte(x, y, this.getEpaisseur(), this.getCouleur(), texte)), true);
 	}
-
-	public void dessinerSeau(int x, int y, BufferedImage image) {
-		this.dessiner(new Action(this.joueur, new FormeSeau(x, y, 0, this.getCouleur(), image)), true);
-	}
-
 	
 	public void dessiner(Action action, boolean envoyerAuReseau) {
-		
+
 
 
 		this.actions.add(action);
@@ -96,6 +91,10 @@ public class Controleur {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setCouleur(Color c) {
+		((FrameApp)this.fenetreActive).setCouleur(c);
 	}
 
 	public boolean supprimerDernier() {

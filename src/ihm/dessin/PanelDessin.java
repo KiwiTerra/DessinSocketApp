@@ -17,8 +17,7 @@ public class PanelDessin extends JPanel
 	private Controleur ctrl;
 	private Forme formeEnCours;
 
-	private int[] taillePlateau;	
-	private double zoomFactor = 1;
+	private int[] taillePlateau;
 
 	public PanelDessin(Controleur ctrl, int[] taillePlateau)
 	{
@@ -36,10 +35,7 @@ public class PanelDessin extends JPanel
 
         Graphics2D g2 = (Graphics2D) g;
 
-		AffineTransform at = new AffineTransform();
-		at.scale(zoomFactor, zoomFactor);
-        g2.transform(at);
-
+	
 		g2.setColor(Color.WHITE);
 		g2.drawRect(0, 0, taillePlateau[0], taillePlateau[1]);
 
@@ -58,14 +54,6 @@ public class PanelDessin extends JPanel
 
 	public void setFormeEnCours(Forme f) {
 		this.formeEnCours = f;
-	}
-	
-	public void majZoom(double zoomFactor)
-	{
-		this.zoomFactor = zoomFactor;
-		this.setSize( (int) (this.taillePlateau[0] * zoomFactor), 
-		              (int) (this.taillePlateau[1] * zoomFactor) );
-		this.repaint();
 	}
 
 	public void majIHM()
