@@ -6,7 +6,9 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 
 import main.Controleur;
+import metier.Joueur;
 import metier.reseaux.multicast.UDPMulticast;
+import metier.reseaux.sockets.Messages;
 
 public class DessinServeur extends Thread {
 
@@ -33,7 +35,7 @@ public class DessinServeur extends Thread {
     public void run() {
         while (!this.serverSocket.isClosed()) {
             try {
-                DessinClientServeur client = new DessinClientServeur(this.ctrl, this.serverSocket.accept());
+                DessinClientServeur client = new DessinClientServeur(this, this.serverSocket.accept());
                 this.clients.add(client);
                 System.out.println("Nouveau client connecté");
                 client.start();
@@ -47,4 +49,32 @@ public class DessinServeur extends Thread {
         return multicast;
     }
 
+    public Controleur getCtrl() {
+        return ctrl;
+    }
+
+    public void connexion(DessinClientServeur dessinClientServeur) throws IOException {
+        String pseudo = dessinClientServeur.getPseudo();
+        if(pseudo == null)
+            return;
+
+        Joueur joueur = this.ctrl.ajouterJoueur(pseudo);
+        for(DessinClientServeur client : this.clients) {
+            client.connexion(joueur);
+        }
+    }
+
+    public void deconnexion(DessinClientServeur dessinClientServeur) throws IOException {
+        String pseudo = dessinClientServeur.getPseudo();
+        this.clients.remove(dessinClientServeur);
+
+        if(dessinClientServeur.getPseudo() == null)
+            return;
+
+        for(DessinClientServeur client : this.clients) {
+            client.deconnexion(pseudo);
+        }
+
+        this.ctrl.retirerJoueur(pseudo);
+    }
 }

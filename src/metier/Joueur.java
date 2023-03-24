@@ -16,7 +16,7 @@ public class Joueur implements Serializable {
 		this.actions = new LinkedList<Action>();
 	}
 
-	public void ajouteurAction(Action a) {
+	public void ajouterAction(Action a) {
 		this.actions.add(a);
 	}
 

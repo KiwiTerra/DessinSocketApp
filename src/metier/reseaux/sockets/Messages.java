@@ -8,4 +8,10 @@ public class Messages {
     // Demander les actions déjà effectuées
     public static final int DEMANDER_ACTIONS        = 2;
 
+    // Informer d'une connexion
+    public static final int CONNEXION               = 3;
+
+    // Informer d'une déconnexion
+    public static final int DECONNEXION             = 4;
+
 }

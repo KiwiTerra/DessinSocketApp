@@ -18,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 
@@ -30,12 +31,16 @@ public class Controleur {
 	private DessinServeur serveur;
 	private DessinClient client;
 
-	private ArrayList<Action> actions; 
+	private ArrayList<Action> actions;
+	private ArrayList<Joueur> joueurs;
 
 	public Controleur() {
 		this.joueur = new Joueur(this.chargerNomJoueur());
 		this.fenetreActive = new FrameDemarrage(this);
 		this.actions = new ArrayList<Action>();
+
+		this.joueurs = new ArrayList<Joueur>();
+		this.joueurs.add(this.joueur);
 	}
 
 	// GETTERS BOUTONS
@@ -77,10 +82,9 @@ public class Controleur {
 	}
 	
 	public void dessiner(Action action, boolean envoyerAuReseau) {
-
-
-
+		System.out.println("Noms joueurs:"  + this.joueurs.stream().map(Joueur::getNom).collect(Collectors.joining(",")));
 		this.actions.add(action);
+		this.joueur.ajouterAction(action);
 		((FrameApp)this.fenetreActive).majIHM();
 
 		if(envoyerAuReseau) {
@@ -121,7 +125,6 @@ System.out.println(a);
 		}
 
 		this.serveur.start();
-
 		this.afficherFenetreDessin();
 	}
 
@@ -143,6 +146,26 @@ System.out.println(a);
 		this.fenetreActive.dispose();
 		this.fenetreActive = new FrameApp(this);
 	}
+
+
+	public Joueur ajouterJoueur(String pseudo) {
+		Joueur j = new Joueur(pseudo);
+		this.joueurs.add(j);
+		return j;
+    }
+
+	public void retirerJoueur(String pseudo) {
+		Joueur joueurTrouve = null;
+		for (Joueur j : this.joueurs) {
+			if (j.getNom().equals(pseudo)) {
+				joueurTrouve = j;
+				break;
+			}
+		}
+
+		if (joueurTrouve != null)
+			this.joueurs.remove(joueurTrouve);
+    }
 
 	public String chargerNomJoueur() {
         File fichier = new File("nomJoueur.txt");
@@ -196,6 +219,10 @@ System.out.println(a);
     public void quitter() {
         this.fenetreActive.dispose();
     }
+
+	public ArrayList<Joueur> getJoueurs() {
+		return joueurs;
+	}
 
 	public static void main(String[] args) {
 		new Controleur();

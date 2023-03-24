@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import main.Controleur;
+import metier.Joueur;
 import metier.actions.Action;
 import metier.reseaux.multicast.UDPMulticast;
 import metier.reseaux.sockets.Messages;
@@ -72,9 +73,25 @@ public class DessinClient extends Thread {
             case Messages.DEMANDER_ACTIONS:
                 Object actions = this.input.readObject();
                 this.ctrl.setActions((ArrayList<Action>) actions);
+
+                ArrayList<Joueur> pseudos = (ArrayList<Joueur>) this.input.readObject();
+                for(Joueur j : pseudos)
+                    if(!j.getNom().equals(this.ctrl.getJoueur().getNom()))
+                        this.ctrl.getJoueurs().add(j);
+
                 this.ctrl.afficherFenetreDessin();
-                
                 break;
+
+            case Messages.CONNEXION:
+                Joueur joueur = (Joueur) this.input.readObject();
+                this.ctrl.getJoueurs().add(joueur);
+                break;
+
+            case Messages.DECONNEXION:
+                String pseudo = this.lire();
+                this.ctrl.retirerJoueur(pseudo);
+                break;
+
             default:
                 break;
         }
