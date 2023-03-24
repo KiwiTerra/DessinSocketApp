@@ -83,6 +83,7 @@ public class Controleur {
 	
 	public void dessiner(Action action, boolean envoyerAuReseau) {
 		this.actions.add(action);
+		this.joueur.ajouteurAction(action);
 		((FrameApp)this.fenetreActive).majIHM();
 
 		if(envoyerAuReseau) {
@@ -93,6 +94,18 @@ public class Controleur {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public boolean supprimerDernier() {
+		Action a = this.joueur.supprimerDernier();
+System.out.println(a);
+		if (a == null) return false;
+
+		// réseaux 
+		this.actions.remove(a);
+		((FrameApp)this.fenetreActive).majIHM();
+
+		return true;
 	}
 
 	// PARTIES

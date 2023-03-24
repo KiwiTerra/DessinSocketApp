@@ -145,6 +145,7 @@ public class PanelButtons extends JPanel implements ActionListener, ChangeListen
 
 		if (e.getSource() == this.btnUndo) {
 			System.out.println("UNDO");
+			this.ctrl.supprimerDernier();
 		}
 	}
 
