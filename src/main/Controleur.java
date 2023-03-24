@@ -82,8 +82,10 @@ public class Controleur {
 
 	
 	public void dessiner(Action action, boolean envoyerAuReseau) {
+		
+
+
 		this.actions.add(action);
-		this.joueur.ajouteurAction(action);
 		((FrameApp)this.fenetreActive).majIHM();
 
 		if(envoyerAuReseau) {

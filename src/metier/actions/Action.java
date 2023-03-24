@@ -7,16 +7,16 @@ import metier.actions.formes.Forme;
 
 public class Action implements Serializable
 {
-	private Joueur utilisateur;
+	private String utilisateur;
 	private Forme forme;
 
 	public Action(Joueur utilisateur, Forme forme)
 	{
-		this.utilisateur = utilisateur;
+		this.utilisateur = utilisateur.getNom();
 		this.forme = forme;
 	}
 
-	public Joueur getUtilisateur() {
+	public String getUtilisateur() {
 		return utilisateur;
 	}
 

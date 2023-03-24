@@ -41,7 +41,9 @@ public class MulticastRecepteur extends Thread {
                 Object object = ois.readObject();
                 if(object instanceof Action) {
                     System.out.println("Action reçue !");
-                    this.ctrl.dessiner((Action) object, false);
+					Action action = (Action) object;
+					if(!action.getUtilisateur().equals(this.ctrl.getJoueur().getNom()))
+                    	this.ctrl.dessiner((Action) object, false);
                 }
 
             } catch (Exception e) {
