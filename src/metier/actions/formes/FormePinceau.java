@@ -29,7 +29,7 @@ public class FormePinceau extends Forme implements Serializable {
 			g.setColor(couleur);
 			g.fillOval(p.x, p.y, stroke, stroke);
 		}
-	}-
+	}
 
 	public void ajouterPoint(Point p) {
 		points.add(p);
