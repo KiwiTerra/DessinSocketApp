@@ -8,32 +8,30 @@ import java.awt.Point;
 
 public class FormePinceau extends Forme implements Serializable {
 
-    private ArrayList<Point> points;
+	private ArrayList<Point> points;
 
-    public FormePinceau(int x, int y, int stroke, Color couleur) {
-        super(x, y, stroke, couleur);
+	public FormePinceau(int x, int y, int stroke, Color couleur) {
+		super(x, y, stroke, couleur);
 
-        this.couleur = couleur;
-        this.x = x;
-        this.y = y;
-        this.stroke = stroke;
-        this.points = new ArrayList<Point>();
-    }
-    
-    
-    public void dessiner(Graphics2D g) {
-        
-        for(Point p : points) {
-            g.setColor(couleur);
-            g.fillOval(p.x, p.y, stroke, stroke);
-        }
-    }
+		this.points = new ArrayList<Point>();
+	}
 
-    public void ajouterPoint(Point p) {
-        points.add(p);
-    }
+	public FormePinceau(int x, int y, int stroke, Color couleur, ArrayList<Point> p) {
+		this(x, y, stroke, couleur);
 
-    public void ajouterPoint(ArrayList<Point> p) {
-        points.addAll(p);
-    }
+		points.addAll(p);
+	}
+	
+	
+	public void dessiner(Graphics2D g) {
+		
+		for(Point p : points) {
+			g.setColor(couleur);
+			g.fillOval(p.x, p.y, stroke, stroke);
+		}
+	}-
+
+	public void ajouterPoint(Point p) {
+		points.add(p);
+	}
 }

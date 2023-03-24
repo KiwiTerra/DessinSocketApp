@@ -57,10 +57,7 @@ public class Controleur {
 
 	// DESSINS
 	public void dessinerPinceau(int x, int y, ArrayList<Point> points) {
-		FormePinceau pinceau = new FormePinceau(x, y, this.getEpaisseur(), this.getCouleur());
-		pinceau.ajouterPoint(points);
-
-		this.dessiner(new Action(this.joueur, pinceau), true);
+		this.dessiner(new Action(this.joueur, new FormePinceau(x, y, this.getEpaisseur(), this.getCouleur(), points)), true);
 	}
 
 	public void dessinerLigne(int x, int y, int xArrive, int yArrive) {
