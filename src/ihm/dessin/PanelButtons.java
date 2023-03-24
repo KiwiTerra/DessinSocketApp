@@ -25,7 +25,7 @@ import ihm.constantes.Outils;
 import main.Controleur;
 
 public class PanelButtons extends JPanel implements ActionListener, ChangeListener {
-	private int NB_BTN;
+	private final int NB_BTN;
 
 	private Controleur ctrl;
 	private int 	   outilActif;

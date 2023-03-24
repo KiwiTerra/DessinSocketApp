@@ -17,7 +17,7 @@ public class FormeTexte extends Forme implements Serializable {
 
 	public void dessiner(Graphics2D g) {
 		g.setColor(this.couleur);
-		g.setFont(new Font("Serif", Font.BOLD, this.stroke));
+		g.setFont(new Font("Serif", Font.BOLD, this.stroke*5));
 
 		g.drawString(this.texte, this.x, this.y);
 	}
