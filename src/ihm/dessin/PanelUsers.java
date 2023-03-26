@@ -6,9 +6,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import main.Controleur;
 import metier.Joueur;
@@ -16,46 +21,33 @@ import metier.Joueur;
 public class PanelUsers extends JPanel {
 	
 	private Controleur ctrl;
-	private ArrayList<Joueur> joueurs;
+
+	private DefaultListModel<String> listModel;
+    private JList<String> joueursList;
 
 	public PanelUsers(Controleur ctrl) {
-		
 		this.ctrl = ctrl;
 
 		this.setLayout(new BorderLayout());
-		this.setPreferredSize(new Dimension(250, 0));
+		this.setBorder(BorderFactory.createTitledBorder("Liste des joueurs"));
 		this.setBackground(Color.LIGHT_GRAY);
 
-		this.joueurs = this.ctrl.getJoueurs();
+		this.listModel = new DefaultListModel<String>();
+        this.joueursList = new JList<String>(listModel);
 
-		JLabel lblNom = new JLabel("Philippe le gros fils de pute ");
-		JLabel lblUtilisateurs = new JLabel("Utilisateurs");
-		lblUtilisateurs.setHorizontalAlignment(JLabel.CENTER);
-		this.add(lblUtilisateurs, BorderLayout.NORTH);
+		JScrollPane scrollPane = new JScrollPane(joueursList);
+		scrollPane.setPreferredSize(new Dimension(200, 200));
 
+		this.majIHM();
 
-		JPanel panelBas = new JPanel();
-		panelBas.setLayout(new GridLayout(10, 1, 5, 5));
-		panelBas.setBackground(Color.LIGHT_GRAY);
-		
-		int cpt = 1;
-		for (Joueur joueur : this.joueurs) {
-			JPanel panelJoueur = new JPanel();
-			panelJoueur.setLayout(new GridLayout(2,1));
-			panelJoueur.setSize(25,20);
-			panelJoueur.add(new JLabel("Utilisateur " + cpt + ": "));
-			panelJoueur.add(new JLabel(joueur.getNom(), JLabel.CENTER));
-			panelBas.add(panelJoueur);
-			cpt++;
-		}
-
-		JPanel panelJoueur = new JPanel();
-		panelJoueur.setLayout(new GridLayout(2,1));
-		panelJoueur.setSize(25,20);
-		panelJoueur.add(new JLabel("Utilisateur " + cpt + ": "));
-		panelJoueur.add(new JLabel("philippe le pissenlit", JLabel.CENTER));
-		panelBas.add(panelJoueur);		
-
-		this.add(panelBas, BorderLayout.CENTER);
+		this.add(scrollPane, BorderLayout.CENTER);
 	}
+
+	public void majIHM() {
+		this.listModel.clear();
+		for(Joueur joueur : this.ctrl.getJoueurs()) {
+			this.listModel.addElement(joueur.getNom());
+		}
+	}
+
 }

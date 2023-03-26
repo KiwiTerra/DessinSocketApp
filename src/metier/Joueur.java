@@ -1,7 +1,6 @@
 package metier;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import metier.actions.Action;
@@ -33,5 +32,10 @@ public class Joueur implements Serializable {
 
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return ((Joueur) obj).getNom().equals(this.nom);
 	}
 }

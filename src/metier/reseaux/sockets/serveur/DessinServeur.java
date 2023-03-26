@@ -1,20 +1,17 @@
 package metier.reseaux.sockets.serveur;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
 import main.Controleur;
 import metier.Joueur;
-import metier.reseaux.multicast.UDPMulticast;
-import metier.reseaux.sockets.Messages;
+import metier.actions.Action;
 
 public class DessinServeur extends Thread {
 
     private final Controleur ctrl;
     private ServerSocket serverSocket;
-    private UDPMulticast multicast;
 
     private final ArrayList<DessinClientServeur> clients;
 
@@ -26,9 +23,23 @@ public class DessinServeur extends Thread {
     public void demarrerServeur() throws IOException {
         this.serverSocket = new ServerSocket(3000);
         System.out.println("Serveur démarré sur le port 3000");
-        this.multicast = new UDPMulticast(this.ctrl, InetAddress.getByName("239.255.80.84"), 8084);
-        this.multicast.demarrer();
-        System.out.println("Multicast démarré");
+    }
+
+    public void arreterServeur() {
+        if(this.serverSocket != null && !this.serverSocket.isClosed()) {
+            try {
+                this.serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for(DessinClientServeur client : this.clients) {
+            client.interrupt();
+        }
+
+        this.interrupt();
+        this.clients.clear();
     }
 
     @Override
@@ -43,10 +54,6 @@ public class DessinServeur extends Thread {
                 e.printStackTrace();
             }
         }
-    }
-
-    public UDPMulticast getMulticast() {
-        return multicast;
     }
 
     public Controleur getCtrl() {
@@ -68,6 +75,8 @@ public class DessinServeur extends Thread {
         String pseudo = dessinClientServeur.getPseudo();
         this.clients.remove(dessinClientServeur);
 
+        dessinClientServeur.interrupt();
+
         if(dessinClientServeur.getPseudo() == null)
             return;
 
@@ -76,5 +85,11 @@ public class DessinServeur extends Thread {
         }
 
         this.ctrl.retirerJoueur(pseudo);
+    }
+
+    public void envoyerAction(Action action) throws IOException {
+        for(DessinClientServeur client : this.clients) {
+            client.envoyerAction(action);
+        }
     }
 }

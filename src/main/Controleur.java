@@ -6,7 +6,6 @@ import ihm.dessin.PanelDessin;
 import metier.Joueur;
 import metier.actions.Action;
 import metier.actions.formes.*;
-import metier.reseaux.multicast.UDPMulticast;
 import metier.reseaux.sockets.client.DessinClient;
 import metier.reseaux.sockets.serveur.DessinServeur;
 
@@ -36,11 +35,7 @@ public class Controleur {
 
 	public Controleur() {
 		this.joueur = new Joueur(this.chargerNomJoueur());
-		this.fenetreActive = new FrameDemarrage(this);
-		this.actions = new ArrayList<Action>();
-
-		this.joueurs = new ArrayList<Joueur>();
-		this.joueurs.add(this.joueur);
+		this.menuPrincipal();
 	}
 
 	// GETTERS BOUTONS
@@ -88,10 +83,14 @@ public class Controleur {
 		((FrameApp)this.fenetreActive).majIHM();
 
 		if(envoyerAuReseau) {
-			UDPMulticast udpMulticast = this.serveur != null ? this.serveur.getMulticast() : this.client.getMulticast();
 			try {
-				udpMulticast.envoyerAction(action);
+				if(this.serveur != null) {
+					this.serveur.envoyerAction(action);
+				} else if(this.client != null) {
+					this.client.envoyerAction(action);
+				}
 			} catch (IOException e) {
+			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -121,6 +120,7 @@ System.out.println(a);
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this.fenetreActive, "Impossible de démarrer le serveur", "Erreur", JOptionPane.ERROR_MESSAGE);
+			this.serveur = null;
 			return;
 		}
 
@@ -137,6 +137,8 @@ System.out.println(a);
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this.fenetreActive, "Impossible de se connecter au serveur", "Erreur", JOptionPane.ERROR_MESSAGE);
+			this.client.deconnexion();
+			this.client = null;
 			return;
 		}
 	}
@@ -147,12 +149,44 @@ System.out.println(a);
 		this.fenetreActive = new FrameApp(this);
 	}
 
+	public void menuPrincipal() {
+		if(this.fenetreActive != null)
+			this.fenetreActive.dispose();
+
+		if(this.serveur != null) {
+			this.serveur.arreterServeur();
+			this.serveur = null;
+		}
+
+		if(this.client != null) {
+			this.client.deconnexion();
+			this.client = null;
+		}
+		
+		this.fenetreActive = new FrameDemarrage(this);
+		this.actions = new ArrayList<Action>();
+		this.joueurs = new ArrayList<Joueur>();
+		this.joueurs.add(this.joueur);
+	}
+
 
 	public Joueur ajouterJoueur(String pseudo) {
 		Joueur j = new Joueur(pseudo);
-		this.joueurs.add(j);
-		return j;
+		return this.ajouterJoueur(j);
     }
+
+	public Joueur ajouterJoueur(Joueur j1) {
+		for(Joueur j2 : this.joueurs) {
+			if(j1.equals(j2)) {
+				return null;
+			}
+		}
+
+		this.joueurs.add(j1);
+		if(this.fenetreActive instanceof FrameApp)
+			((FrameApp)this.fenetreActive).majIHM();
+		return j1;
+	}
 
 	public void retirerJoueur(String pseudo) {
 		Joueur joueurTrouve = null;
@@ -163,8 +197,11 @@ System.out.println(a);
 			}
 		}
 
-		if (joueurTrouve != null)
+		if (joueurTrouve != null) {
 			this.joueurs.remove(joueurTrouve);
+			if(this.fenetreActive instanceof FrameApp)
+				((FrameApp)this.fenetreActive).majIHM();
+		}
     }
 
 	public String chargerNomJoueur() {
@@ -201,6 +238,11 @@ System.out.println(a);
     }
 
 	public boolean verifierPseudo(String pseudo) {
+		for (Joueur j : this.joueurs) {
+			if (j.getNom().equals(pseudo)) {
+				return false;
+			}
+		}
         return true;
     }
 

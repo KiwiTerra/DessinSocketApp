@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import main.Controleur;
 import metier.Joueur;
@@ -41,9 +41,9 @@ public class DessinClientServeur extends Thread {
                 this.traiterChaine(type);
                 type = this.recevoirEntier();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            if(e instanceof EOFException) {
+            if(e instanceof EOFException || e instanceof SocketException) {
                 try {
                     this.serveur.deconnexion(this);
                 } catch (IOException e1) {
@@ -55,7 +55,7 @@ public class DessinClientServeur extends Thread {
         }
     }
 
-    private void traiterChaine(int type) throws IOException {
+    private void traiterChaine(int type) throws IOException, ClassNotFoundException {
         System.out.println("Message reçu ! (" + type + ")");
         switch (type) {
             case Messages.AJOUTER_JOUEUR:
@@ -76,6 +76,13 @@ public class DessinClientServeur extends Thread {
                 this.envoyerActions();
                 this.serveur.connexion(this);
                 break;
+
+            case Messages.DESSINER:
+                Action action = (Action) this.input.readObject();
+                if(!action.getUtilisateur().equals(this.ctrl.getJoueur().getNom()))
+                    this.ctrl.dessiner(action, false);
+                this.serveur.envoyerAction(action);
+                break;
             
             default:
                 break;
@@ -87,6 +94,11 @@ public class DessinClientServeur extends Thread {
         ArrayList<Action> actions = this.ctrl.getActions();
         this.output.writeObject(actions);
         this.output.writeObject(this.ctrl.getJoueurs());
+    }
+
+    public void envoyerAction(Action action) throws IOException {
+        this.envoyer(Messages.DESSINER);
+        this.output.writeObject(action);
     }
 
     public void connexion(Joueur joueur) throws IOException {
@@ -136,6 +148,4 @@ public class DessinClientServeur extends Thread {
             e.printStackTrace();
         }
     }
-
-
 }

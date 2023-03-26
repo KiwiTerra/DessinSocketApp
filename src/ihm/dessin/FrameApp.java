@@ -59,6 +59,7 @@ public class FrameApp extends JFrame {
 
 	public void majIHM() {
 		this.panelCadre.majIHM();
+		this.panelUsers.majIHM();
 	}
 
 	public void setCouleur(Color c) {

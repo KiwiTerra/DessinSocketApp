@@ -14,4 +14,7 @@ public class Messages {
     // Informer d'une déconnexion
     public static final int DECONNEXION             = 4;
 
+    // Informer d'un dessin
+    public static final int DESSINER                = 5;
+
 }
