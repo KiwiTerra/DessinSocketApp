@@ -8,11 +8,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 
 import ihm.constantes.Outils;
 import main.Controleur;
@@ -81,6 +87,34 @@ public class PanelCadre extends JPanel implements MouseListener, MouseMotionList
 		}
 
 		this.panelImage.majIHM();
+	}
+
+	public void exporterSous(String format) {
+		// Choit du répertoire de sauvegarde
+		JFileChooser choose = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		choose.setFileFilter(new FileNameExtensionFilter("Création d'une image au format " + format, format));
+		int res = choose.showSaveDialog(null);
+
+		if (res == JFileChooser.APPROVE_OPTION) 
+		{
+			// Récupération des paramètres du fichier
+			File file = choose.getSelectedFile();
+			String filePath = file.getAbsolutePath();
+
+			// Transformer le dessin en image
+			BufferedImage image = new BufferedImage(this.taillePlateau[0], this.taillePlateau[1], BufferedImage.TYPE_INT_RGB);
+			Graphics2D g2d = image.createGraphics();
+			this.panelImage.paint(g2d);
+			g2d.dispose();
+
+			// Enregistrement du fichier dans le répertoire choisi
+			try {
+				ImageIO.write(image, format, new File(filePath + "." + format));
+				JOptionPane.showMessageDialog(this, "Exportation réussi");
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(this, "Erreur lors de l'exportation");
+			}
+		}
 	}
     
     public void mouseDragged(MouseEvent e) 

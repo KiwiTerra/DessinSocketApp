@@ -32,19 +32,14 @@ public class PanelDessin extends JPanel
     public void paint(Graphics g) 
     {
 		super.paint(g);
-
         Graphics2D g2 = (Graphics2D) g;
-
 	
 		g2.setColor(Color.WHITE);
 		g2.drawRect(0, 0, taillePlateau[0], taillePlateau[1]);
 
-		System.out.println("nb action : " + ctrl.getActions().size());
 		Iterator<Action> itAction = ctrl.getActions().iterator();
-		while (itAction.hasNext())
-		{
+		while (itAction.hasNext()) {
 			Action a = itAction.next();
-
 			a.getForme().dessiner(g2);
 		}
 

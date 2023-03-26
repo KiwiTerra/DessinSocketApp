@@ -14,8 +14,6 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
 
     private final Controleur ctrl;
 
-    private JButton btnTempAppli;
-
     private JButton btnCreerSalon;
     private JButton btnRejoindreSalon;
     private JButton btnQuitter;
@@ -56,12 +54,6 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
         this.lblBienvenue.setForeground(couleurGrise);
         this.lblBienvenue.setBounds(150, 135, 100 + (this.ctrl.getJoueur().getNom().length() * 9), 50);
 
-        this.btnTempAppli = new JButton("Temp");
-        this.btnTempAppli.setBounds(0, 0, 100, 50);
-        this.btnTempAppli.setFont(this.btnTempAppli.getFont().deriveFont(15f));
-        this.btnTempAppli.setForeground(Color.WHITE);
-        this.btnTempAppli.setBackground(couleurGrise);
-
         try {
             System.out.println(new File("./ressources/img/edit.png").getAbsolutePath());
             this.btnModifier = new JButton(new ImageIcon(ImageIO.read(new File("./ressources/img/edit.png")).getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
@@ -81,11 +73,8 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
         this.add(this.btnRejoindreSalon);
         this.add(this.btnQuitter);
         this.add(this.btnModifier);
-        this.add(this.btnTempAppli);
 
 
-
-        this.btnTempAppli.addActionListener(this);
         this.btnCreerSalon.addActionListener(this);
         this.btnRejoindreSalon.addActionListener(this);
         this.btnQuitter.addActionListener(this);
@@ -94,10 +83,6 @@ public class PanelMenuPrincipal extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this.btnTempAppli) {
-            this.ctrl.afficherFenetreDessin();
-        }
-
         if (e.getSource() == this.btnCreerSalon) {
             this.ctrl.creerPartie();
         }

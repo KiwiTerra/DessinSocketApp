@@ -1,7 +1,6 @@
 package ihm.dessin;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -19,6 +18,7 @@ public class FrameApp extends JFrame {
 	private final int LONGUEUR = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	private final int HAUTEUR  = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
+	private Menu         menu;
 	private PanelCadre   panelCadre;
 	private PanelButtons panelBtns;
 	private PanelUsers   panelUsers;
@@ -33,11 +33,13 @@ public class FrameApp extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création des composants
+		this.menu = new Menu(ctrl);
+
 		this.panelCadre = new PanelCadre(ctrl);
 
 		JPanel panelDroite = new JPanel(new GridLayout(2, 1));
-		this.panelBtns     = new PanelButtons(ctrl);
-		this.panelUsers    = new PanelUsers  (ctrl);
+		this.panelBtns  = new PanelButtons(ctrl);
+		this.panelUsers = new PanelUsers  (ctrl);
 
 		JScrollPane spBtns = new JScrollPane(panelBtns);
 		spBtns.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -48,6 +50,8 @@ public class FrameApp extends JFrame {
 		spUsers.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
 		// Positionnement des composants
+		this.setJMenuBar(this.menu);
+
 		this.add(this.panelCadre, BorderLayout.CENTER);
 		this.add(panelDroite    , BorderLayout.EAST  );
 
@@ -60,6 +64,10 @@ public class FrameApp extends JFrame {
 	public void majIHM() {
 		this.panelCadre.majIHM();
 		this.panelUsers.majIHM();
+	}
+
+	public void exporterSous(String format) {
+		this.panelCadre.exporterSous(format);
 	}
 
 	public void setCouleur(Color c) {

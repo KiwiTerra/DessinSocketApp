@@ -134,6 +134,11 @@ System.out.println(a);
 		}
 	}
 
+	// EXPORTER
+	public void exporterSous(String format) {System.out.println(format);
+		((FrameApp)this.fenetreActive).exporterSous(format);
+	}
+
 	// PARTIES
 	public void creerPartie() {
 		this.serveur = new DessinServeur(this);
