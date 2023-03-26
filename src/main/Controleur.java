@@ -79,7 +79,13 @@ public class Controleur {
 	public void dessiner(Action action, boolean envoyerAuReseau) {
 		System.out.println("Noms joueurs:"  + this.joueurs.stream().map(Joueur::getNom).collect(Collectors.joining(",")));
 		this.actions.add(action);
-		this.joueur.ajouterAction(action);
+		for(Joueur j : this.joueurs) {
+			if(j.getNom().equals(action.getUtilisateur())) {
+				j.ajouterAction(action);
+				break;
+			}
+		}
+		
 		((FrameApp)this.fenetreActive).majIHM();
 
 		if(envoyerAuReseau) {
@@ -105,11 +111,27 @@ public class Controleur {
 System.out.println(a);
 		if (a == null) return false;
 
-		// réseaux 
-		this.actions.remove(a);
-		((FrameApp)this.fenetreActive).majIHM();
+		this.supprimerAction(a, true);
 
 		return true;
+	}
+
+	public void supprimerAction(Action action, boolean envoyerAuReseau) {
+		this.actions.remove(action);
+		((FrameApp)this.fenetreActive).majIHM();
+
+		if(envoyerAuReseau) {
+			try {
+				if(this.serveur != null) {
+					this.serveur.supprimerAction(action);
+				} else if(this.client != null) {
+					this.client.supprimerAction(action);
+				}
+			} catch (IOException e) {
+			// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// PARTIES

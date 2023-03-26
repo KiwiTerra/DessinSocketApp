@@ -98,6 +98,14 @@ public class DessinClient extends Thread {
                 this.ctrl.dessiner(action, false);
                 break;
 
+            case Messages.SUPPRIMER_DESSIN:
+                action = (Action) this.input.readObject();
+                if(action.getUtilisateur().equals(this.ctrl.getJoueur().getNom()))
+                    break;
+
+                this.ctrl.supprimerAction(action, false);
+                break;
+
             default:
                 break;
         }
@@ -150,6 +158,11 @@ public class DessinClient extends Thread {
 
     public void envoyerAction(Action action) throws IOException {
         this.envoyer(Messages.DESSINER);
+        this.output.writeObject(action);
+    }
+
+    public void supprimerAction(Action action) throws IOException {
+        this.envoyer(Messages.SUPPRIMER_DESSIN);
         this.output.writeObject(action);
     }
     

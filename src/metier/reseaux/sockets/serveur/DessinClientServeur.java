@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
 import main.Controleur;
@@ -83,7 +84,14 @@ public class DessinClientServeur extends Thread {
                     this.ctrl.dessiner(action, false);
                 this.serveur.envoyerAction(action);
                 break;
-            
+
+            case Messages.SUPPRIMER_DESSIN:
+                action = (Action) this.input.readObject();
+                if(!action.getUtilisateur().equals(this.ctrl.getJoueur().getNom()))
+                    this.ctrl.supprimerAction(action, false);
+
+                this.serveur.supprimerAction(action);
+                break;
             default:
                 break;
         }
@@ -98,6 +106,11 @@ public class DessinClientServeur extends Thread {
 
     public void envoyerAction(Action action) throws IOException {
         this.envoyer(Messages.DESSINER);
+        this.output.writeObject(action);
+    }
+
+    public void supprimerAction(Action action) throws IOException {
+        this.envoyer(Messages.SUPPRIMER_DESSIN);
         this.output.writeObject(action);
     }
 

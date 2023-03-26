@@ -17,4 +17,7 @@ public class Messages {
     // Informer d'un dessin
     public static final int DESSINER                = 5;
 
+    // Informer d'une suppression de dessin
+    public static final int SUPPRIMER_DESSIN        = 6;
+
 }

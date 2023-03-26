@@ -92,4 +92,10 @@ public class DessinServeur extends Thread {
             client.envoyerAction(action);
         }
     }
+
+    public void supprimerAction(Action action) throws IOException {
+        for(DessinClientServeur client : this.clients) {
+            client.supprimerAction(action);
+        }
+    }
 }

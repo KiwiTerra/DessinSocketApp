@@ -16,14 +16,17 @@ public class Joueur implements Serializable {
 	}
 
 	public void ajouterAction(Action a) {
+		if(this.actions == null)
+			this.actions = new LinkedList<Action>();
+
 		this.actions.add(a);
 	}
 
 	public Action supprimerDernier() {
-		if (actions.isEmpty()) 
+		if (this.actions == null || this.actions.isEmpty()) 
 			return null;
 
-		return actions.removeLast();
+		return this.actions.removeLast();
 	}
 
 	public String getNom() {
