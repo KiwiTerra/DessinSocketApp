@@ -3,14 +3,9 @@ package ihm.dessin;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

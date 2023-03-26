@@ -52,7 +52,7 @@ public class PanelCadre extends JPanel implements MouseListener, MouseMotionList
     public PanelCadre(Controleur ctrl)
     {
         this.ctrl = ctrl;
-		this.taillePlateau = new int[] { 500, 500 };
+		this.taillePlateau = new int[] { 1200, 800 };
 
 		this.setLayout(null);
 		this.setBackground(Color.GRAY);
