@@ -23,16 +23,19 @@ public class FormePinceau extends Forme implements Serializable {
 		points.addAll(p);
 	}
 	
-	
 	public void dessiner(Graphics2D g) {
-		BasicStroke bs = new BasicStroke(this.stroke);
-        int decalage = (int) (bs.getLineWidth() / 2);
+
+		this.points.add(0, new Point(this.x, this.y));
 		
+		g.setStroke(new BasicStroke(this.stroke));
 		g.setColor(this.couleur);
-		g.fillOval(this.x - decalage, this.y - decalage, this.stroke, this.stroke);
 		
-		for(Point p : this.points)
-			g.fillOval(p.x - decalage, p.y - decalage, this.stroke, this.stroke);
+		for (int x = 0 ; x < this.points.size()-1 ; x++) {
+			Point p1 = this.points.get(x);
+			Point p2 = this.points.get(x+1);
+
+			g.drawLine(p1.x, p1.y, p2.x, p2.y);
+		}
 	}
 
 	public void ajouterPoint(Point p) {

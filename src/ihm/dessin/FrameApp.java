@@ -13,8 +13,6 @@ import java.awt.Toolkit;
 
 public class FrameApp extends JFrame {
 
-	private Controleur ctrl;
-
 	private final int LONGUEUR = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	private final int HAUTEUR  = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
@@ -24,8 +22,6 @@ public class FrameApp extends JFrame {
 	private PanelUsers   panelUsers;
 
 	public FrameApp(Controleur ctrl) {
-
-		this.ctrl = ctrl;
 
 		this.setSize(this.LONGUEUR, this.HAUTEUR);
 		this.setTitle("DessinSocketApp");
