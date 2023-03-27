@@ -2,7 +2,6 @@ package main;
 
 import ihm.demarrage.FrameDemarrage;
 import ihm.dessin.FrameApp;
-import ihm.dessin.PanelDessin;
 import metier.Joueur;
 import metier.actions.Action;
 import metier.actions.formes.*;
@@ -11,7 +10,6 @@ import metier.reseaux.sockets.serveur.DessinServeur;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
