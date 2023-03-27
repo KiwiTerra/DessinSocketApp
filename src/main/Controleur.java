@@ -232,7 +232,7 @@ System.out.println(a);
     }
 
 	public String chargerNomJoueur() {
-        File fichier = new File("nomJoueur.txt");
+        File fichier = new File("./ressources/donnees/nomJoueur.txt");
         String nomJoueur = "Joueur" + (int)(Math.random()*1000);
         if (!fichier.exists()) {
             try {
@@ -256,7 +256,7 @@ System.out.println(a);
 
     public void modifierNomJoueur(String nomJoueur) {
         try {
-            FileWriter fw = new FileWriter("nomJoueur.txt", false);
+            FileWriter fw = new FileWriter("./ressources/donnees/nomJoueur.txt", false);
             fw.write(nomJoueur);
             fw.close();
             this.joueur.setNom(nomJoueur);
